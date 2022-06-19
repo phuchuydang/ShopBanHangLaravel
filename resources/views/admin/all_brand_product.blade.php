@@ -5,7 +5,7 @@
 <div class="table-agile-info">
     <div class="panel panel-default">
       <div class="panel-heading">
-        LIST CATEGORY PRODUCT
+        LIST brand PRODUCT
       </div>
       <div class="row w3-res-tb">
         <div class="col-sm-5 m-b-xs">
@@ -43,7 +43,7 @@
                   <input type="checkbox"><i></i>
                 </label>
               </th>
-              <th>Category Name</th>
+              <th>Brand Name</th>
               <th>Description</th>
               <th>Display</th>
               <th>Create At</th>
@@ -51,30 +51,30 @@
             </tr>
           </thead>
           <tbody>
-            @foreach($all_category_product as $key => $cate_pro)
+            @foreach($all_brand_product as $key => $brand_pro)
             <tr>
               <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
-              <td>{{($cate_pro->category_name)}}</td>
-              <td><span class="text-ellipsis">{{$cate_pro->category_desc}}</span></td>
+              <td>{{($brand_pro->brand_name)}}</td>
+              <td><span class="text-ellipsis">{{$brand_pro->brand_desc}}</span></td>
               <td><span class="text-ellipsis">
                 <?php
-                  if($cate_pro->category_status == 1){
+                  if($brand_pro->brand_status == 1){
                 ?>
-                  <a href="{{URL::to('/active-category-product/'.$cate_pro->category_id)}}"> <span class="fa-thumb-styling fa fa-thumbs-up"></span></a>
+                  <a href="{{URL::to('/unactive-brand-product/'.$brand_pro->brand_id)}}"> <span class="fa-thumb-styling fa fa-thumbs-up"></span></a>
                 <?php
                   }else{
                 ?>
-                  <a href="{{URL::to('/unactive-category-product/'.$cate_pro->category_id)}}"> <span class="fa-thumb-styling fa fa-thumbs-down"></span></a>
+                  <a href="{{URL::to('/active-brand-product/'.$brand_pro->brand_id)}}"> <span class="fa-thumb-styling fa fa-thumbs-down"></span></a>
                 <?php
                   } 
                 ?>
               </span></td>
-              <td><span class="text-ellipsis">{{$cate_pro->created_at}}</span></td>
+              <td><span class="text-ellipsis">{{$brand_pro->created_at}}</span></td>
               <td>
-                <a href="{{URL::to('/edit-category-product/'.$cate_pro->category_id)}}" class="editPro" ui-toggle-class="">
+                <a href="{{URL::to('/edit-brand-product/'.$brand_pro->brand_id)}}" class="editPro" ui-toggle-class="">
                   <i class="fa fa-pencil-square text-success text-active"></i> </a>
                   <br>
-                <a onclick="return confirm('Are you sure to delete?')" href="{{URL::to('/delete-category-product/'.$cate_pro->category_id)}}" class="delPro" ui-toggle-class="">
+                <a onclick="return confirm('Are you sure to delete brand?')" href="{{URL::to('/delete-brand-product/'.$brand_pro->brand_id)}}" class="delPro" ui-toggle-class="">
                   <i class="fa fa-trash text-danger text"></i></a>
               </td>
             </tr>

@@ -25,6 +25,17 @@ body a{
 	text-decoration:none;
 }
 
+.fa-pencil-square:before {
+    font-size: 30px;
+    content: "\f14b";
+}
+
+.fa-trash:before {
+    font-size: 30px;
+    content: "\f1f8";
+}
+
+
 h1,h2,h3,h4,h5,h6{
 	margin:0;			   
 }
@@ -48,6 +59,21 @@ body a:hover{
     -moz-transition:all .3s ease-in-out;
     -o-transition:all .3s ease-in-out;
     transition:all .3s ease-in-out;
+}
+span.fa-thumb-styling.fa.fa-thumbs-up{
+    color:green;
+    font-size:28px;
+    width: 100%;
+    /* text-align: center; */
+    font-weight: bold;
+}
+
+span.fa-thumb-styling.fa.fa-thumbs-down {
+    color:red;
+    font-size:28px;
+    width: 100%;
+    /* text-align: center; */
+    font-weight: bold;
 }
 #sidebar ul li {
     position: relative;
@@ -1841,7 +1867,7 @@ select.input-sm {
     height: 21px;
     width: 95px;
     position: relative;
-    float: left;
+    /* float: left; */
     margin-top: 11px;
 }
 .badge.bg-important {
@@ -2512,8 +2538,8 @@ div#chartContainer5,div#chartContainer6,div#chartContainer7,div#chartContainer8 
     height:150px;
     margin-top:20px;
 }
-canvas.canvasjs-chart-canvas {
-}
+/* canvas.canvasjs-chart-canvas {
+} */
 .chart_agile_bottom{
 	padding:20px;
 	background:#fff;
@@ -3154,3 +3180,4 @@ span.text-alert{
     text-align: center;
     font-weight: bold;
 }
+

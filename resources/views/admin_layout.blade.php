@@ -99,13 +99,38 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>Product Category</span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/add-category-product')}}">Add Product</a></li>
-						<li><a href="{{URL::to('/all-category-product')}}">List Product</a></li>
+						<li><a href="{{URL::to('/add-category-product')}}">Add Product Category</a></li>
+						<li><a href="{{URL::to('/all-category-product')}}">List Product Category</a></li>
+                        {{-- <li><a href="grids.html">Grids</a></li> --}}
+                    </ul>
+                </li>
+
+				<li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Product Brand</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/add-brand-product')}}">Add Brand Product</a></li>
+						<li><a href="{{URL::to('/all-brand-product')}}">List Brand Product</a></li>
+                        {{-- <li><a href="grids.html">Grids</a></li> --}}
+                    </ul>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-book"></i>
+                        <span>Product</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/add-product')}}">Add Product</a></li>
+						<li><a href="{{URL::to('/all-product')}}">List Product</a></li>
                         {{-- <li><a href="grids.html">Grids</a></li> --}}
                     </ul>
                 </li>
                 
-            </ul>            </div>
+            </ul>            
+		</div>
         <!-- sidebar menu end-->
     </div>
 </aside>
@@ -145,80 +170,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		  jQuery(this).closest('.small-graph-box').fadeOut(200);
 		  return false;
 	   });
-	   
-	    //CHARTS
-	    function gd(year, day, month) {
-			return new Date(year, month - 1, day).getTime();
-		}
-		
-		graphArea2 = Morris.Area({
-			element: 'hero-area',
-			padding: 10,
-        behaveLikeLine: true,
-        gridEnabled: false,
-        gridLineColor: '#dddddd',
-        axes: true,
-        resize: true,
-        smooth:true,
-        pointSize: 0,
-        lineWidth: 0,
-        fillOpacity:0.85,
-			data: [
-				{period: '2015 Q1', iphone: 2668, ipad: null, itouch: 2649},
-				{period: '2015 Q2', iphone: 15780, ipad: 13799, itouch: 12051},
-				{period: '2015 Q3', iphone: 12920, ipad: 10975, itouch: 9910},
-				{period: '2015 Q4', iphone: 8770, ipad: 6600, itouch: 6695},
-				{period: '2016 Q1', iphone: 10820, ipad: 10924, itouch: 12300},
-				{period: '2016 Q2', iphone: 9680, ipad: 9010, itouch: 7891},
-				{period: '2016 Q3', iphone: 4830, ipad: 3805, itouch: 1598},
-				{period: '2016 Q4', iphone: 15083, ipad: 8977, itouch: 5185},
-				{period: '2017 Q1', iphone: 10697, ipad: 4470, itouch: 2038},
-			
-			],
-			lineColors:['#eb6f6f','#926383','#eb6f6f'],
-			xkey: 'period',
-            redraw: true,
-            ykeys: ['iphone', 'ipad', 'itouch'],
-            labels: ['All Visitors', 'Returning Visitors', 'Unique Visitors'],
-			pointSize: 2,
-			hideHover: 'auto',
-			resize: true
-		});
-		
-	   
-	});
-	</script>
-<!-- calendar -->
-	<script type="text/javascript" src="{{asset('public/backend/js/monthly.js')}}"></script>
-	<script type="text/javascript">
-		$(window).load( function() {
+	
 
-			$('#mycalendar').monthly({
-				mode: 'event',
-				
-			});
-
-			$('#mycalendar2').monthly({
-				mode: 'picker',
-				target: '#mytarget',
-				setWidth: '250px',
-				startHidden: true,
-				showTrigger: '#mytarget',
-				stylePast: true,
-				disablePast: true
-			});
-
-		switch(window.location.protocol) {
-		case 'http:':
-		case 'https:':
-		// running on a server, should be good.
-		break;
-		case 'file:':
-		alert('Just a heads-up, events will not work when run locally.');
-		}
-
-		});
-	</script>
-	<!-- //calendar -->
 </body>
 </html>
