@@ -11,14 +11,26 @@ use Illuminate\Support\Facades\Redirect;
 
 class BrandProductController extends Controller
 {
-    //
+    
+    public function Authenticate()
+    {
+        $admin_id = Session::get('admin_id');
+        if ($admin_id) {
+            return Redirect::to('dashboard');
+        } else {
+            return Redirect::to('admin')->send();
+        }
+    }
+
     public function addBrandProduct()
     {
+        $this->Authenticate();
         return view('admin.add_brand_product');
     }
 
     public function saveBrandProduct(Request $request)
     {
+        $this->Authenticate();
         $data = array();
         $data['brand_name'] = $request->brand_product_name;
         $data['brand_desc'] = $request->brand_product_desc;
@@ -39,6 +51,7 @@ class BrandProductController extends Controller
 
     public function allBrandProduct()
     {
+        $this->Authenticate();
         $all_brand_product = DB::table('tbl_brand_product')->get();
         $manager_brand_product = view('admin.all_brand_product')->with('all_brand_product', $all_brand_product);
         return view('admin_layout')->with('admin.all_brand_product', $manager_brand_product);
@@ -46,6 +59,7 @@ class BrandProductController extends Controller
 
     public function editBrandProduct($brand_product_id)
     {
+        $this->Authenticate();
         $edit_brand_product = DB::table('tbl_brand_product')->where('brand_id', $brand_product_id)->get();
         $manager_brand_product = view('admin.edit_brand_product')->with('edit_brand_product', $edit_brand_product);
         return view('admin_layout')->with('admin.edit_brand_product', $manager_brand_product);
@@ -53,6 +67,7 @@ class BrandProductController extends Controller
 
     public function updateBrandProduct(Request $request, $brand_product_id)
     {
+        $this->Authenticate();
         $data = array();
         $data['brand_name'] = $request->brand_product_name;
         $data['brand_desc'] = $request->brand_product_desc;
@@ -65,6 +80,7 @@ class BrandProductController extends Controller
 
     public function deleteBrandProduct($brand_product_id)
     {
+        $this->Authenticate();
         DB::table('tbl_brand_product')->where('brand_id', $brand_product_id)->delete();
         Session::put('message', 'Xóa thương hiệu thành công');
         return Redirect::to('/all-brand-product');
@@ -72,6 +88,7 @@ class BrandProductController extends Controller
 
     public function unactiveBrandProduct($brand_product_id)
     {
+        $this->Authenticate();
         $result = DB::table('tbl_brand_product')->where('brand_id', $brand_product_id)->update(['brand_status' => 0]);
         if ($result) {
             $message = "Brand Product Unactive Successfully";
@@ -86,6 +103,7 @@ class BrandProductController extends Controller
 
     public function activeBrandProduct($brand_product_id)
     {
+        $this->Authenticate();
         $result = DB::table('tbl_brand_product')->where('brand_id', $brand_product_id)->update(['brand_status' => 1]);
         if ($result) {
             $message = "Brand Product Active Successfully";

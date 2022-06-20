@@ -32,6 +32,9 @@ Route::get('/logout', [AdminController::class, 'log_out']);
 
 Route::post('/admin-dashboard', [AdminController::class, 'dashboard']);
 
+//myprofile
+Route::get('/myprofile', [AdminController::class, 'showMyProfile']);
+
 //Category Product
 Route::get('/add-category-product', [CategoryProductController::class, 'addCategoryProduct']);
 
@@ -78,6 +81,10 @@ Route::get('/delete-product/{product_id}', [ProductController::class, 'deletePro
 Route::get('/all-product', [ProductController::class, 'allProduct']);
 
 Route::post('/save-product', [ProductController::class, 'saveProduct']);
+
+Route::get('/active-product/{product_id}', [ProductController::class, 'activeProduct']);
+
+Route::get('/unactive-product/{product_id}', [ProductController::class, 'unactiveProduct']);
 
 
 

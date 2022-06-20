@@ -10,6 +10,17 @@ use Illuminate\Support\Facades\Redirect;
 
 class CategoryProductController extends Controller
 {
+
+    public function Authenticate()
+    {
+        $admin_id = Session::get('admin_id');
+        if ($admin_id) {
+            return Redirect::to('dashboard');
+        } else {
+            return Redirect::to('admin')->send();
+        }
+    }
+
     public function addCategoryProduct()
     {
         return view('admin.add_category_product');

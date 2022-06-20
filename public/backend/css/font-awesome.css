@@ -505,7 +505,20 @@
   content: "\f06e";
 }
 .fa-eye-slash:before {
+  font-size: 28px;
+  width: 100%;
+  /* text-align: center; */
+  font-weight: bold;
   content: "\f070";
+}
+
+.fa-eye:before {
+  font-size: 28px;
+  width: 100%;
+  /* text-align: center; */
+  font-weight: bold;
+  content: "\f070";
+  content: "\f06e";
 }
 .fa-warning:before,
 .fa-exclamation-triangle:before {

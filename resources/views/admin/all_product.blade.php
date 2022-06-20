@@ -58,18 +58,18 @@
               <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
               <td>{{($pro->product_name)}}</td>
               <td>{{($pro->product_price)}}</td>
-              <td><img src="public/uploads/product/{{($pro->product_image)}}" height="100" width="10"></td>
-              <td>{{$pro->category_id}}</td>
-              <td>{{$pro->brand_id}}</td>
+              <td><img src="public/uploads/product/{{($pro->product_image)}}" height="100" width="100"></td>
+              <td>{{($pro->category_name)}}</td>
+              <td>{{$pro->brand_name}}</td>
               <td><span class="text-ellipsis">
                 <?php
                   if($pro->product_status == 1){
                 ?>
-                  <a href="{{URL::to('/active-product/'.$pro->product_id)}}"> <span class="fa-thumb-styling fa fa-thumbs-up"></span></a>
+                  <a href="{{URL::to('/unactive-product/'.$pro->product_id)}}"> <span class="fa fa-eye" aria-hidden="true"></span></a>
                 <?php
                   }else{
                 ?>
-                  <a href="{{URL::to('/unactive-product/'.$pro->product_id)}}"> <span class="fa-thumb-styling fa fa-thumbs-down"></span></a>
+                  <a href="{{URL::to('/active-product/'.$pro->product_id)}}"> <span class="fa fa-eye-slash" aria-hidden="true"></span></a>
                 <?php
                   } 
                 ?>
