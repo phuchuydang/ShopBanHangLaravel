@@ -7,6 +7,8 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\CategoryProductController;
 use App\Http\Controllers\BrandProductController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +24,12 @@ use App\Http\Controllers\ProductController;
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'index']);
+
+//Category Home
+Route::get('/category-product-home/{category_id}', [CategoryProductController::class, 'showCategoryProduct']);
+
+//Brand Home
+Route::get('/brand-product-home/{brand_id}', [BrandProductController::class, 'showBrandProduct']);
 
 //BE
 Route::get('/admin', [AdminController::class, 'index']);
@@ -86,8 +94,28 @@ Route::get('/active-product/{product_id}', [ProductController::class, 'activePro
 
 Route::get('/unactive-product/{product_id}', [ProductController::class, 'unactiveProduct']);
 
+//Product Detail
+Route::get('/product-detail/{product_id}', [ProductController::class, 'productDetail']);
 
+//Cart
+Route::post('/save-cart', [CartController::class, 'saveCart']);
+Route::get('/show-cart', [CartController::class, 'showCart']);
+Route::get('/delete-cart/{rowId}', [CartController::class, 'deleteCart']);
+Route::post('/update-cart-quantity', [CartController::class, 'updateCartQuantity']);
 
+//Checkout
+Route::get('/login-checkout', [CheckoutController::class, 'loginCheckOut']);
+Route::post('/login-customer', [CheckoutController::class, 'loginCustomer']);
+Route::get('/show-checkout', [CheckoutController::class, 'checkOut']);
+Route::post('/save-checkout', [CheckoutController::class, 'saveCheckOut']);
+Route::get('/logout-checkout', [CheckoutController::class, 'logoutCheckOut']);
 
+//Customer
+Route::post('/add-customer', [CheckoutController::class, 'addCustomer']);
 
+//Payment
+Route::get('/payment', [CheckoutController::class, 'payment']);
+Route::post('/order-place', [CheckoutController::class, 'orderPlace']);
 
+//Search
+Route::post('/search', [HomeController::class, 'search']);

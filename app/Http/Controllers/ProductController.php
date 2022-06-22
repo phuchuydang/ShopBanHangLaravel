@@ -13,7 +13,7 @@ class ProductController extends Controller
 
     public function Authenticate()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Session::get('name');
         if ($admin_id) {
             return Redirect::to('dashboard');
         } else {
@@ -139,5 +139,27 @@ class ProductController extends Controller
         DB::table('tbl_product')->where('product_id', $product_id)->update(['product_status' => 0]);
         Session::put('message', 'Unactive Product Successfully');
         return Redirect::to('/all-product');
+    }
+
+    //product detail
+    public function productDetail($product_id)
+    {
+        $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->get();
+        $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
+        $product_detail = DB::table('tbl_product')
+        ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
+        ->join('tbl_brand_product', 'tbl_product.brand_id', '=', 'tbl_brand_product.brand_id')
+        ->where('tbl_product.product_id',$product_id)->get();
+        foreach($product_detail as $key => $value){
+            $category_id = $value->category_id;
+        }
+        $relative_product = DB::table('tbl_product')
+        ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
+        ->join('tbl_brand_product', 'tbl_product.brand_id', '=', 'tbl_brand_product.brand_id')
+        ->where('tbl_category_product.category_id',$category_id)->whereNotIn('tbl_product.product_id',[$product_id])->get();
+        return view('pages.product.show_detail')->with('cate_product', $cate_product)
+        ->with('brand_product', $brand_product)
+        ->with('product_detail', $product_detail)
+        ->with('relative_product', $relative_product);
     }
 }

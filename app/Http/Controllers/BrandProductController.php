@@ -14,7 +14,7 @@ class BrandProductController extends Controller
     
     public function Authenticate()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Session::get('name');
         if ($admin_id) {
             return Redirect::to('dashboard');
         } else {
@@ -114,5 +114,17 @@ class BrandProductController extends Controller
             Session::put('message', $message);
             return Redirect::to('/all-brand-product');
         }
+    }
+
+    public function showBrandProduct($brand_id)
+    {
+        $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->get();
+        $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
+        $brand_name = DB::table('tbl_brand_product')->where('brand_id', $brand_id)->limit(1)->get();
+        $brand_by_id = DB::table('tbl_product')->join('tbl_brand_product', 'tbl_product.brand_id', '=', 'tbl_brand_product.brand_id')
+        ->where('tbl_product.brand_id', $brand_id)->get();
+        return view('pages.brand.show_brand')->with('cate_product', $cate_product)->with('brand_product', $brand_product)
+        ->with('brand_by_id', $brand_by_id)->with('brand_name', $brand_name);
+        
     }
 }

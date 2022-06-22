@@ -27,6 +27,7 @@
 </head><!--/head-->
 
 <body>
+
 	<header id="header"><!--header-->
 		<div class="header_top"><!--header_top-->
 			<div class="container">
@@ -34,8 +35,8 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
-								<li><a href="#"><i class="fa fa-phone"></i> +2 95 01 88 821</a></li>
-								<li><a href="#"><i class="fa fa-envelope"></i> info@domain.com</a></li>
+								<li><a href="#"><i class="fa fa-phone"></i> +0 33 24 20477</a></li>
+								<li><a href="#"><i class="fa fa-envelope"></i> dphuytdt@gmail.com</a></li>
 							</ul>
 						</div>
 					</div>
@@ -59,7 +60,7 @@
 				<div class="row">
 					<div class="col-sm-4">
 						<div class="logo pull-left">
-							<a href="index.html"><img src="{{('public/frontend/images/logo.png')}}" alt="" /></a>
+							<a href="{{URL::to('/')}}"><img src="{{URL::to('public/frontend/images/logo.png')}}" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
 							<div class="btn-group">
@@ -88,11 +89,46 @@
 					<div class="col-sm-8">
 						<div class="shop-menu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="#"><i class="fa fa-user"></i> Account</a></li>
+								<li><a href="{{URL::to('/account-info')}}"><i class="fa fa-user"></i> Account</a></li>
 								<li><a href="#"><i class="fa fa-star"></i> Wishlist</a></li>
-								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li><a href="login.html"><i class="fa fa-lock"></i> Login</a></li>
+								<?php
+
+									$customer_id = Session::get('customer_id');
+									$shipping_id = Session::get('shipping_id');
+									if($customer_id != NULL && $shipping_id == NULL){
+
+								?>
+								<li><a href="{{URL::to('/show-checkout')}}"><i class="fa fa-shopping-cart"></i> Checkout</a></li>
+								<?php }else if($customer_id != NULL && $shipping_id != NULL){ ?>
+
+									<li><a href="{{URL::to('/payment')}}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+
+								<?php
+								} else {
+								?>
+								<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<?php } ?>
+								<li><a href="{{URL::to('/show-cart')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<?php 
+									$customer_id=Session::get('customer_id'); 
+									if($customer_id!=NULL){
+
+
+								?>
+								{{-- <li><a href="{{URL::to('/show-checkout')}}"><i class="fa fa-crosshairs"></i> Checkout</a></li> --}}
+								<li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Logout</a></li>
+
+								<?php 
+								}
+								else {
+
+								?>
+									
+									<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Login</a></li>
+								<?php 
+
+									}
+								?>
 							</ul>
 						</div>
 					</div>
@@ -103,7 +139,7 @@
 		<div class="header-bottom"><!--header-bottom-->
 			<div class="container">
 				<div class="row">
-					<div class="col-sm-9">
+					<div class="col-sm-8">
 						<div class="navbar-header">
 							<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
 								<span class="sr-only">Toggle navigation</span>
@@ -118,27 +154,28 @@
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
                                         <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li> 
-										<li><a href="checkout.html">Checkout</a></li> 
-										<li><a href="cart.html">Cart</a></li> 
-										<li><a href="login.html">Login</a></li> 
                                     </ul>
                                 </li> 
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
-                                    <ul role="menu" class="sub-menu">
+                                    {{-- <ul role="menu" class="sub-menu">
                                         <li><a href="blog.html">Blog List</a></li>
 										<li><a href="blog-single.html">Blog Single</a></li>
-                                    </ul>
+                                    </ul> --}}
                                 </li> 
-								<li><a href="404.html">404</a></li>
+								<li><a href="404.html">Cart</a></li>
 								<li><a href="contact-us.html">Contact</a></li>
 							</ul>
 						</div>
 					</div>
-					<div class="col-sm-3">
-						<div class="search_box pull-right">
-							<input type="text" placeholder="Search"/>
-						</div>
+					<div class="col-sm-4">
+						<form action="{{URL::to('/search')}}" method="POST" >
+							{{csrf_field()}}
+							<div class="search_box pull-right">
+								<input type="text" name = "keyword" placeholder="Search"/>
+								<button type="submit" style="margin-top: 0px;" class="btn btn-default get">Search</button>
+								
+							</div>
+						</form>
 					</div>
 				</div>
 			</div>
@@ -165,8 +202,8 @@
 									<button type="button" class="btn btn-default get">Get it now</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="{{('public/frontend/images/girl1.jpg')}}" class="girl img-responsive" alt="" />
-									<img src="{{('public/frontend/images/pricing.png')}}"  class="pricing" alt="" />
+									<img src="{{URL::to('public/frontend/images/girl1.jpg')}}" class="girl img-responsive" alt="" />
+									<img src="{{URL::to('public/frontend/images/pricing.png')}}"  class="pricing" alt="" />
 								</div>
 							</div>
 							<div class="item">
@@ -177,8 +214,8 @@
 									<button type="button" class="btn btn-default get">Get it now</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="{{('public/frontend/images/girl2.jpg')}}" class="girl img-responsive" alt="" />
-									<img src="{{('public/frontend/images/pricing.png')}}"  class="pricing" alt="" />
+									<img src="{{URL::to('public/frontend/images/girl2.jpg')}}" class="girl img-responsive" alt="" />
+									<img src="{{URL::to('public/frontend/images/pricing.png')}}"  class="pricing" alt="" />
 								</div>
 							</div>
 							
@@ -190,8 +227,8 @@
 									<button type="button" class="btn btn-default get">Get it now</button>
 								</div>
 								<div class="col-sm-6">
-									<img src="{{('public/frontend/images/girl3.jpg')}}" class="girl img-responsive" alt="" />
-									<img src="{{('public/frontend/images/pricing.png')}}" class="pricing" alt="" />
+									<img src="{{URL::to('public/frontend/images/girl3.jpg')}}" class="girl img-responsive" alt="" />
+									<img src="{{URL::to('public/frontend/images/pricing.png')}}" class="pricing" alt="" />
 								</div>
 							</div>
 							
@@ -216,138 +253,39 @@
 				<div class="col-sm-3">
 					<div class="left-sidebar">
 						<h2>Category</h2>
+
 						<div class="panel-group category-products" id="accordian"><!--category-productsr-->
+						@foreach($cate_product as $key => $category)
 							<div class="panel panel-default">
 								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#sportswear">
-											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
-											Sportswear
-										</a>
-									</h4>
-								</div>
-								<div id="sportswear" class="panel-collapse collapse">
-									<div class="panel-body">
-										<ul>
-											<li><a href="#">Nike </a></li>
-											<li><a href="#">Under Armour </a></li>
-											<li><a href="#">Adidas </a></li>
-											<li><a href="#">Puma</a></li>
-											<li><a href="#">ASICS </a></li>
-										</ul>
-									</div>
+									<h4 class="panel-title"><a href="{{URL::to('/category-product-home/'.$category->category_id)}}">{{$category->category_name}}</a></h4>
 								</div>
 							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#mens">
-											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
-											Mens
-										</a>
-									</h4>
-								</div>
-								<div id="mens" class="panel-collapse collapse">
-									<div class="panel-body">
-										<ul>
-											<li><a href="#">Fendi</a></li>
-											<li><a href="#">Guess</a></li>
-											<li><a href="#">Valentino</a></li>
-											<li><a href="#">Dior</a></li>
-											<li><a href="#">Versace</a></li>
-											<li><a href="#">Armani</a></li>
-											<li><a href="#">Prada</a></li>
-											<li><a href="#">Dolce and Gabbana</a></li>
-											<li><a href="#">Chanel</a></li>
-											<li><a href="#">Gucci</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title">
-										<a data-toggle="collapse" data-parent="#accordian" href="#womens">
-											<span class="badge pull-right"><i class="fa fa-plus"></i></span>
-											Womens
-										</a>
-									</h4>
-								</div>
-								<div id="womens" class="panel-collapse collapse">
-									<div class="panel-body">
-										<ul>
-											<li><a href="#">Fendi</a></li>
-											<li><a href="#">Guess</a></li>
-											<li><a href="#">Valentino</a></li>
-											<li><a href="#">Dior</a></li>
-											<li><a href="#">Versace</a></li>
-										</ul>
-									</div>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Kids</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Fashion</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Households</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Interiors</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Clothing</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Bags</a></h4>
-								</div>
-							</div>
-							<div class="panel panel-default">
-								<div class="panel-heading">
-									<h4 class="panel-title"><a href="#">Shoes</a></h4>
-								</div>
-							</div>
+						@endforeach
 						</div><!--/category-products-->
 					
 						<div class="brands_products"><!--brands_products-->
 							<h2>Brands</h2>
 							<div class="brands-name">
 								<ul class="nav nav-pills nav-stacked">
-									<li><a href="#"> <span class="pull-right">(50)</span>Acne</a></li>
-									<li><a href="#"> <span class="pull-right">(56)</span>Grüne Erde</a></li>
-									<li><a href="#"> <span class="pull-right">(27)</span>Albiro</a></li>
-									<li><a href="#"> <span class="pull-right">(32)</span>Ronhill</a></li>
-									<li><a href="#"> <span class="pull-right">(5)</span>Oddmolly</a></li>
-									<li><a href="#"> <span class="pull-right">(9)</span>Boudestijn</a></li>
-									<li><a href="#"> <span class="pull-right">(4)</span>Rösch creative culture</a></li>
+									@foreach($brand_product as $key => $brand)
+										<li><a href="{{URL::to('/brand-product-home/'.$brand->brand_id)}}"> <span class="pull-right"></span>{{$brand->brand_name}}</a></li>
+									@endforeach
+									
 								</ul>
 							</div>
 						</div><!--/brands_products-->
 						
-						<div class="price-range"><!--price-range-->
+						{{-- <div class="price-range"><!--price-range-->
 							<h2>Price Range</h2>
 							<div class="well text-center">
 								 <input type="text" class="span2" value="" data-slider-min="0" data-slider-max="600" data-slider-step="5" data-slider-value="[250,450]" id="sl2" ><br />
 								 <b class="pull-left">$ 0</b> <b class="pull-right">$ 600</b>
 							</div>
-						</div><!--/price-range-->
+						</div><!--/price-range--> --}}
 						
 						<div class="shipping text-center"><!--shipping-->
-							<img src="{{('public/frontend/images/shipping.jpg')}}" alt="" />
+							<img src="{{URL::to('public/frontend/images/shipping.jpg')}}" alt="" />
 						</div><!--/shipping-->
 					
 					</div>
@@ -355,6 +293,7 @@
 				
 				<div class="col-sm-9 padding-right">
 						@yield('content')
+					
 				</div>
 			</div>
 		</div>
@@ -375,7 +314,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{('public/frontend/images/iframe1.png')}}" alt="" />
+										<img src="{{URL::to('public/frontend/images/iframe1.png')}}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -390,7 +329,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{('public/frontend/images/iframe2.png')}}" alt="" />
+										<img src="{{URL::to('public/frontend/images/iframe2.png')}}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -405,7 +344,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{('public/frontend/images/iframe3.png')}}" alt="" />
+										<img src="{{URL::to('public/frontend/images/iframe3.png')}}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -420,7 +359,7 @@
 							<div class="video-gallery text-center">
 								<a href="#">
 									<div class="iframe-img">
-										<img src="{{('public/frontend/images/iframe4.png')}}" alt="" />
+										<img src="{{URL::to('public/frontend/images/iframe4.png')}}" alt="" />
 									</div>
 									<div class="overlay-icon">
 										<i class="fa fa-play-circle-o"></i>
@@ -433,7 +372,7 @@
 					</div>
 					<div class="col-sm-3">
 						<div class="address">
-							<img src="{{('public/frontend/images/map.png')}}" alt="" />
+							<img src="{{URL::to('public/frontend/images/map.png')}}" alt="" />
 							<p>505 S Atlantic Ave Virginia Beach, VA(Virginia)</p>
 						</div>
 					</div>
@@ -510,16 +449,14 @@
 		<div class="footer-bottom">
 			<div class="container">
 				<div class="row">
-					<p class="pull-left">Copyright © 2013 E-SHOPPER Inc. All rights reserved.</p>
-					<p class="pull-right">Designed by <span><a target="_blank" href="http://www.themeum.com">Themeum</a></span></p>
+					<p class="pull-left">E-SHOPPER Inc. All rights reserved.</p>
+					<p class="pull-right"></p>
 				</div>
 			</div>
 		</div>
 		
 	</footer><!--/Footer-->
-	
 
-  
     <script src="{{asset('public/frontend/js/jquery.js')}}"></script>
 	<script src="{{asset('public/frontend/js/bootstrap.min.js')}}"></script>
 	<script src="{{asset('public/frontend/js/jquery.scrollUp.min.js')}}"></script>

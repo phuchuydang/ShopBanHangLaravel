@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\Redirect;
 class CategoryProductController extends Controller
 {
 
+    //admin
     public function Authenticate()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Session::get('name');
         if ($admin_id) {
             return Redirect::to('dashboard');
         } else {
@@ -118,5 +119,21 @@ class CategoryProductController extends Controller
             Session::put('message', $message);
             return Redirect::to('/all-category-product');
         }
+    }
+    //User
+    //show all category product
+   
+    public function showCategoryProduct($category_id)
+    {
+        $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->orderby('category_id', 'desc')->get();
+        $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->orderby('brand_id', 'desc')->get();
+        $category_by_id = DB::table('tbl_product')
+        ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
+        ->where('tbl_product.category_id', $category_id)->get();
+        //get category name
+        $category_name = DB::table('tbl_category_product')->where('category_id', $category_id)->limit(1)->get();
+        return view('pages.category.show_category')
+        ->with('cate_product', $cate_product)->with('brand_product', $brand_product)
+        ->with('category_by_id', $category_by_id)->with('category_name', $category_name);
     }
 }

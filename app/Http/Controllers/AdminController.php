@@ -18,7 +18,7 @@ class AdminController extends Controller
     
     public function Authenticate()
     {
-        $admin_id = Session::get('admin_id');
+        $admin_id = Session::get('name');
         if ($admin_id) {
             return Redirect::to('dashboard');
         } else {
@@ -31,12 +31,7 @@ class AdminController extends Controller
         return view('admin_login');
     }
 
-    public function showDashboard()
-    {
-        $this->Authenticate();
-        return view('admin.dashboard');
-    }
-
+  
     public function dashboard(Request $request)
     {
         $email = $request->input('admin_email');
@@ -52,6 +47,13 @@ class AdminController extends Controller
             
         }
     }
+
+    public function showDashboard()
+    {
+        $this->Authenticate();
+        return view('admin.dashboard');
+    }
+
 
     public function log_out()
     {
