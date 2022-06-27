@@ -106,6 +106,8 @@ class CheckoutController extends Controller
         // print_r($content);
         // echo "</pre>";
         $data = array();
+        $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->get();
+        $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
         //payment_method
         $data['payment_method'] = $request->paymnet_option;
         $data['payment_status'] = 'In progress';
@@ -133,14 +135,57 @@ class CheckoutController extends Controller
         if($data['payment_method'] == 3){
             echo "Thanh toán trực tuyến";
             //return Redirect::to('/momo');
-        } else if($data['payment_method'] == 2){
+        } else if($data['payment_method'] == 1){
             echo "Thanh toán qua thẻ";
             //return Redirect::to('/cash');
         } else {
-            echo "Thanh toán tiền mặt";
-            //return Redirect::to('/bank');
+            //get future date > 5 days to daya
+            $date = date('Y-m-d');
+            $date = strtotime($date. ' + 5 days');
+            $date = date('Y-m-d', $date);
+            return view('pages.checkout.cash')->with('cate_produ_o', $cate_product)->with('brand_product', $brand_product)
+            ->with('date', $date);
         }
         //return Redirect::to('/payment');
     }
+    public function Authenticate()
+    {
+        $admin_id = Session::get('name');
+        if ($admin_id) {
+            return Redirect::to('dashboard');
+        } else {
+            return Redirect::to('admin')->send();
+        }
+    }
+
+    public function manageOrder(){
+        $this->Authenticate();
+        $all_order = DB::table('tbl_order')
+        ->join('tbl_customer', 'tbl_order.customer_id', '=', 'tbl_customer.customer_id')
+        ->join('tbl_shipping', 'tbl_order.shipping_id', '=', 'tbl_shipping.shipping_id')
+        ->join('tbl_payment', 'tbl_order.payment_id', '=', 'tbl_payment.payment_id')
+        ->select('tbl_order.*', 'tbl_customer.*', 'tbl_shipping.*', 'tbl_payment.*')
+        ->orderBy('tbl_order.order_id', 'desc')->get();
+    
+        $manage_order = view('admin.manage_order')->with('all_order', $all_order);
+        return view('admin_layout')->with('admin.manage_order', $manage_order);
+    }
+
+    public function viewOrder($order_id){
+        $this->Authenticate();
+        $order_by_id = DB::table('tbl_order')
+        ->join('tbl_customer', 'tbl_order.customer_id', '=', 'tbl_customer.customer_id')
+        ->join('tbl_shipping', 'tbl_order.shipping_id', '=', 'tbl_shipping.shipping_id')
+        ->join('tbl_payment', 'tbl_order.payment_id', '=', 'tbl_payment.payment_id')
+        ->join('tbl_order_details', 'tbl_order.order_id', '=', 'tbl_order_details.order_id')
+        ->join('tbl_product', 'tbl_order_details.product_id', '=', 'tbl_product.product_id')
+        ->select('tbl_order.*', 'tbl_customer.*', 'tbl_shipping.*', 'tbl_payment.*', 'tbl_order_details.*', 'tbl_product.*')
+        ->where('tbl_order.order_id', $order_id)
+        ->first();
+        // /print_r($order_by_id);
+        $view_order = view('admin.view_order')->with('order_by_id', $order_by_id);
+        return view('admin_layout')->with('admin.view_order', $view_order);
+    }
+
 
 }

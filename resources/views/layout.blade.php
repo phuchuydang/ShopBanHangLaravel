@@ -16,9 +16,10 @@
 	<link href="{{asset('public/frontend/css/responsive.css')}}" rel="stylesheet">
 	<link href="{{asset('public/frontend/css/style.css')}}" rel="stylesheet">
     <!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
+   
     <script src="js/respond.min.js"></script>
-    <![endif]-->       
+    <![endif]-->   
+	<script src="{{URL::to('public/frontend/js/html5shiv.js')}}"></script>    
     <link rel="shortcut icon" href="{{('public/frontend/images/ico/favicon.ico')}}">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
@@ -63,7 +64,7 @@
 							<a href="{{URL::to('/')}}"><img src="{{URL::to('public/frontend/images/logo.png')}}" alt="" /></a>
 						</div>
 						<div class="btn-group pull-right">
-							<div class="btn-group">
+							{{-- <div class="btn-group">
 								<button type="button" class="btn btn-default dropdown-toggle usa" data-toggle="dropdown">
 									USA
 									<span class="caret"></span>
@@ -83,7 +84,7 @@
 									<li><a href="#">Canadian Dollar</a></li>
 									<li><a href="#">Pound</a></li>
 								</ul>
-							</div>
+							</div> --}}
 						</div>
 					</div>
 					<div class="col-sm-8">
@@ -162,7 +163,7 @@
 										<li><a href="blog-single.html">Blog Single</a></li>
                                     </ul> --}}
                                 </li> 
-								<li><a href="404.html">Cart</a></li>
+								<li><a href="{{URL::to('/show-cart')}}">Cart</a></li>
 								<li><a href="contact-us.html">Contact</a></li>
 							</ul>
 						</div>

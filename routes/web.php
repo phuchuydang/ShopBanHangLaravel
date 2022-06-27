@@ -119,3 +119,10 @@ Route::post('/order-place', [CheckoutController::class, 'orderPlace']);
 
 //Search
 Route::post('/search', [HomeController::class, 'search']);
+
+//Manage order
+Route::get('/manage-order', [CheckoutController::class, 'manageOrder']);
+
+Route::get('/view-order/{order_id}', [CheckoutController::class, 'viewOrder']);
+
+Route::get('/delete-order/{order_id}', [CheckoutController::class, 'deleteOrder']);

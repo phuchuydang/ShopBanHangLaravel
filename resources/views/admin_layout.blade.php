@@ -56,7 +56,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <!-- user login dropdown start-->
         <li class="dropdown">
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <img alt="" src="{{asset('public/backend/images/2.png')}}">
+                <img alt="" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEqUPHsU4ebuzz1VkrvE2aQE5r5e6g76UJu3l6_EGVZCyA3kn0GQoQ8urtDyGxDvRhJMA&usqp=CAU">
                 <span class="username">
                     <?php
                         $name = Session::get('name');
@@ -91,6 +91,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
+                </li>
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                        <span>Order</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/manage-order')}}">Manage Order</a></li>
+                    </ul>
                 </li>
                 
                 <li class="sub-menu">
