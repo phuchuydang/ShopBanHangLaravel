@@ -1,9 +1,4 @@
-<!--A Design by W3layouts
-Author: W3layout
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
+
 <!DOCTYPE html>
 <head>
 <title>Dashboard</title>
@@ -14,6 +9,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 <!-- bootstrap-css -->
 <link rel="stylesheet" href="{{asset('public/backend/css/bootstrap.min.css')}}" >
+
 <!-- //bootstrap-css -->
 <!-- Custom CSS -->
 <link href="{{asset('public/backend/css/style.css')}}" rel='stylesheet' type='text/css' />
@@ -31,6 +27,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('public/backend/js/jquery2.0.3.min.js')}}"></script>
 <script src="{{asset('public/backend/js/raphael-min.js')}}"></script>
 <script src="{{asset('public/backend/js/morris.js')}}"></script>
+<script src="{{asset('public/backend/ckeditor5-build-classic/ckeditor.js')}}"></script>
+<script>
+    CKEDITOR.replace('ckeditor1');
+</script>
 </head>
 <body>
 <section id="container">
@@ -38,7 +38,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <header class="header fixed-top clearfix">
 <!--logo start-->
 <div class="brand">
-    <a href="index.html" class="logo">
+    <a href="{{URL::to('/dashboard')}}" class="logo">
         ADMIN
     </a>
     <div class="sidebar-toggle-box">
@@ -116,12 +116,24 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 				<li class="sub-menu">
                     <a href="javascript:;">
-                        <i class = "fa fa-adjust custom"></i>
+                        <i class = "fa fa-adjust custom" aria-hidden="true"></i>
                         <span>Product Brand</span>
                     </a>
                     <ul class="sub">
 						<li><a href="{{URL::to('/add-brand-product')}}">Add Brand Product</a></li>
 						<li><a href="{{URL::to('/all-brand-product')}}">List Brand Product</a></li>
+                        {{-- <li><a href="grids.html">Grids</a></li> --}}
+                    </ul>
+                </li>
+
+                <li class="sub-menu">
+                    <a href="javascript:;">
+                        <i class="fa fa-gift"></i>
+                        <span>Voucher</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/add-voucher')}}">Add Voucher</a></li>
+						<li><a href="{{URL::to('/all-voucher')}}">List Voucher</a></li>
                         {{-- <li><a href="grids.html">Grids</a></li> --}}
                     </ul>
                 </li>
@@ -152,13 +164,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
  <!-- footer -->
 		  <div class="footer">
 			<div class="wthree-copyright">
-			  <p>© 2017 Visitors. All rights reserved</p>
+			  <p style="text-align: center;">All rights reserved</p>
 			</div>
 		  </div>
   <!-- / footer -->
 </section>
 <!--main content end-->
 </section>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script src="{{asset('public/backend/js/bootstrap.js')}}"></script>
 <script src="{{asset('public/backend/js/jquery.dcjqaccordion.2.7.js')}}"></script>
 <script src="{{asset('public/backend/js/scripts.js')}}"></script>
@@ -166,6 +179,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('public/backend/js/jquery.nicescroll.js')}}"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
 <script src="{{asset('public/backend/js/jquery.scrollTo.js')}}"></script>
+
 <!-- morris JavaScript -->	
 <script>
 	$(document).ready(function() {

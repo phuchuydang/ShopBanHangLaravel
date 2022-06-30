@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Gloudemans\Shoppingcart\Facades\Cart;
+use Whoops\Run;
+
 class CartController extends Controller
 {
     public function saveCart(Request $request)
@@ -52,5 +54,4 @@ class CartController extends Controller
         return Redirect::to('/show-cart');
     }
 
-    
 }

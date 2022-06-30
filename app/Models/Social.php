@@ -9,11 +9,12 @@ class Social extends Model
 {
     use HasFactory;
     public $timestamps = false;
-    protected $table = 'tbl_social';
+
     protected $fillable = ['provider_user_id', 'provider','user'];
     protected  $primaryKey = 'user_id';
+    protected $table = 'tbl_social';
 
     public function login(){
-        return $this->belongsTo('App\Models\Login', 'id');
+        return $this->belongsTo('App\Models\Login', 'user_id');
     }
 }

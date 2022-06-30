@@ -1,9 +1,4 @@
-<!--A Design by W3layouts
-Author: W3layout
-Author URL: http://w3layouts.com
-License: Creative Commons Attribution 3.0 Unported
-License URL: http://creativecommons.org/licenses/by/3.0/
--->
+
 <!DOCTYPE html>
 <head>
     <title>Admin Page</title>
@@ -44,10 +39,14 @@ License URL: http://creativecommons.org/licenses/by/3.0/
                         <input type="password" class="ggg" name="admin_password" placeholder="PASSWORD" required="">
                         <span><input type="checkbox" />Remember Me</span>
                         <h6><a href="#">Forgot Password?</a></h6>
-                            <div class="clearfix"></div>
-                            <input type="submit" value="Sign In" name="login">
+                        <div class="clearfix">
+                            {!! NoCaptcha::renderJs() !!}
+                            {!! NoCaptcha::display() !!}
+                        </div>
+                        <input type="submit" value="Sign In" name="login">
+                      
                     </form>
-                    <p>Don't Have an Account ?<a href="registration.html">Create an account</a></p>
+                    {{-- <p>Don't Have an Account ?<a href="registration.html">Create an account</a></p> --}}
             </div>
         </div>
         <script src="{{asset('public/backend/js/bootstrap.js')}}"></script>
@@ -57,5 +56,6 @@ License URL: http://creativecommons.org/licenses/by/3.0/
         <script src="{{asset('public/backend/js/jquery.nicescroll.js')}}"></script>
         <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
         <script src="{{asset('public/backend/js/jquery.scrollTo.js')}}"></script>
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     </body>
 </html>

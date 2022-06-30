@@ -10,8 +10,8 @@
                    
                     <form action="{{URL::to('/login-customer')}}" method="POST">
                         {{ csrf_field() }}
-                        <input type="email" name="email_account" placeholder="Email Address" required />
-                        <input type="password" name="password_account" placeholder="Password"  required />
+                        <input type="email" name="customer_email" placeholder="Email Address" required />
+                        <input type="password" name="customer_password" placeholder="Password"  required />
                         <span>
                             <input type="checkbox" class="checkbox"> 
                             Keep me signed in

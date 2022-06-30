@@ -9,7 +9,7 @@ class Brand extends Model
 {
     use HasFactory;
     //public $timestamps = false;
-    protected $filltable = [
+    protected $fillable = [
         'brand_name',
         'brand_desc',
         'brand_status',

@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-
+use App\Models\Product;
+use App\Models\Category;
+use App\Models\Brand;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -24,20 +26,20 @@ class ProductController extends Controller
     public function addProduct()
     {
         $this->Authenticate();
-        $cate = DB::table('tbl_category_product')->where('category_status', 1)->get();
-        $brand = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
-        return view('admin.add_product')->with('cate', $cate)->with('brand', $brand);       
+        $cate = Category::all();
+        $brand = Brand::all();
+        return view('admin.product.add_product')->with('cate', $cate)->with('brand', $brand);       
     }
 
     //all product
     public function allProduct()
     {
+
         $this->Authenticate();
-        $all_product = DB::table('tbl_product')
-        ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
-        ->join('tbl_brand_product', 'tbl_product.brand_id', '=', 'tbl_brand_product.brand_id')->orderBy('product_id','asc')->get();
-        $manager_product = view('admin.all_product')->with('all_product', $all_product);
-        return view('admin_layout')->with('admin.all_product', $manager_product);
+        $product = new Product();
+        $all_product  = $product->getProductByCategoryAndBrand();
+        $manager_product = view('admin.product.all_product')->with('all_product', $all_product);
+        return view('admin_layout')->with('admin.product.all_product', $manager_product);
     }
 
     public function saveProduct(Request $request)
@@ -74,8 +76,8 @@ class ProductController extends Controller
         $cate = DB::table('tbl_category_product')->where('category_status', 1)->get();
         $brand = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
         $product = DB::table('tbl_product')->where('product_id', $product_id)->get();
-        $edit_product = view('admin.edit_product')->with('product', $product)->with('cate', $cate)->with('brand', $brand);
-        return view('admin_layout')->with('admin.edit_product', $edit_product);
+        $edit_product = view('admin.product.edit_product')->with('product', $product)->with('cate', $cate)->with('brand', $brand);
+        return view('admin_layout')->with('admin.product.edit_product', $edit_product);
 
     }
 
@@ -118,7 +120,8 @@ class ProductController extends Controller
     public function deleteProduct($product_id)
     {
         $this->Authenticate();
-        DB::table('tbl_product')->where('product_id', $product_id)->delete();
+        $isDeleteProduct = Product::find($product_id);
+        $isDeleteProduct->delete();
         Session::put('message', 'Delete Product Successfully');
         return Redirect::to('/all-product');
     }

@@ -11,6 +11,7 @@
     <link href="{{asset('public/frontend/css/font-awesome.min.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/prettyPhoto.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/price-range.css')}}" rel="stylesheet">
+	<link href="{{asset('public/frontend/css/sweetalert.css')}}" rel="stylesheet">
     <link href="{{asset('public/frontend/css/animate.css')}}" rel="stylesheet">
 	<link href="{{asset('public/frontend/css/main.css')}}" rel="stylesheet">
 	<link href="{{asset('public/frontend/css/responsive.css')}}" rel="stylesheet">
@@ -36,7 +37,7 @@
 					<div class="col-sm-6">
 						<div class="contactinfo">
 							<ul class="nav nav-pills">
-								<li><a href="#"><i class="fa fa-phone"></i> +0 33 24 20477</a></li>
+								<li><a href=""><i class="fa fa-phone"></i> +0 33 24 20477</a></li>
 								<li><a href="#"><i class="fa fa-envelope"></i> dphuytdt@gmail.com</a></li>
 							</ul>
 						</div>
@@ -44,11 +45,11 @@
 					<div class="col-sm-6">
 						<div class="social-icons pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="#"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="#"><i class="fa fa-twitter"></i></a></li>
-								<li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+								<li><a href="{{URL::to('https://www.facebook.com/dphuy.tdt/')}}"><i class="fa fa-facebook"></i></a></li>
+								<li><a href="{{URL::to('https://github.com/dphuytdt')}}"><i class="fa fa-github"></i></a></li>
+								{{-- <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
 								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
-								<li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+								<li><a href="#"><i class="fa fa-google-plus"></i></a></li> --}}
 							</ul>
 						</div>
 					</div>
@@ -464,5 +465,38 @@
 	<script src="{{asset('public/frontend/js/price-range.js')}}"></script>
     <script src="{{asset('public/frontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('public/frontend/js/main.js')}}"></script>
+	{{-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> --}}
+	{{-- <script src="{{asset('public/frontend/js/sweetalert.js')}}"></script> --}}
+	<script src="{{asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
+	<script type="text/javascript">
+		// $(document).ready(function(){
+		// 	$('.add-to-cart').click(function(){
+		// 		var id = $(this).data('product_id');
+		// 		var cart_product_id = $('.cart_product_id_' + id).val();
+		// 		var cart_product_name = $('.cart_product_name_' + id).val();
+		// 		var cart_product_image = $('.cart_product_image_' + id).val();
+		// 		var cart_product_price = $('.cart_product_price_' + id).val();
+		// 		var cart_product_qty = $('.cart_product_qty_' + id).val();
+		// 		var token = $('input[name="_token"]').val();
+		// 		// swal("Hello world!");
+		// 		$.ajax({
+		// 			//using ajax
+		// 			url: "{{url('/add-to-cart-ajax')}}",
+		// 			method: "POST",
+		// 			data: {
+		// 				cart_product_id: cart_product_id,
+		// 				cart_product_name: cart_product_name,
+		// 				cart_product_image: cart_product_image,
+		// 				cart_product_price: cart_product_price,
+		// 				cart_product_qty: cart_product_qty,
+		// 				_token: token
+		// 			},
+		// 			success: function(data){
+		// 				swal("Hello world!")
+		// 			}
+		// 		});
+		// 	});
+		// });
+	</script>
 </body>
 </html>

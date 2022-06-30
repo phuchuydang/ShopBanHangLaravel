@@ -4,33 +4,41 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
-
 class Customer extends Model
 {
     use HasFactory;
-    //public $timestamps = false;
-    // protected $filltable = [
-    //     'customer_name',
-    //     'customer_email',
-    //     'customer_password',
-    //     'customer_phone',
-    //     'customer_address',
-    //     'created_at',
-    //     'updated_at',
-    // ];
+    public $timestamps = false;
+    protected $fillable = [
+        'customer_name',
+        'customer_email',
+        'customer_password',
+        'customer_phone',
+        'customer_address',
+    ];
+    protected $table = 'tbl_customer';
+    protected $primaryKey = 'customer_id';
 
-    // protected $primaryKey = 'customer_id';
-    // protected $table = 'tbl_customer';
-
-    // public function __construct()
-    // {
-    //     parent::__construct();
-    // }
-
-   
+    public function getCustomerByEmailPassword($email, $password)
+    {
+        $customer = Customer::where('customer_email', $email)->where('customer_password', $password)->first();
+        // echo '<pre>';
+        // print_r($customer);
+        // echo '</pre>';
+         $login_count = Customer::where('customer_email', $email)
+        ->where('customer_password', $password)->count();
+        // echo '<pre>';
+        // print_r($login_count);
+        // echo '</pre>';
+        if($login_count){
+            Session::put('customer_id', $customer->customer_id);
+            Session::put('customer_name', $customer->customer_name);
+            Session::put('message', 'Login Successfully');
+            return Redirect::to('/show-checkout');
+        } else {
+            Session::put('message', 'Login Failed');
+            return Redirect::to('/login-checkout');
+        }
+    }
 }

@@ -2,12 +2,25 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Customer;
+
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+//Socialite
+//use Socialite
+use Illuminate\Contracts\Auth\Guard;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+use App\Models\Login;
+use App\Models\Social;
+use Illuminate\Support\Facades\Log;
+
+use phpDocumentor\Reflection\Types\This;
+
 use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Http\Request;
-
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+session_start();
 class CheckoutController extends Controller
 {
     
@@ -28,10 +41,10 @@ class CheckoutController extends Controller
         $data['customer_phone'] = $request->customer_phone;
         $data['customer_address'] = $request->customer_address;
         $data['created_at'] = date('Y-m-d');
-        $customer_id = DB::table('tbl_customer')->insert($data);
+        $customer_id = DB::table('tbl_customer')->insertGetId($data);
         Session::put('customer_id', $customer_id);
         Session::put('customer_name', $request->customer_name);
-        return Redirect::to('/show-checkout');
+        return Redirect::to('/show-checkout')->with('customer_name', $request->customer_name);
     }
 
     public function CheckOut(){
@@ -85,18 +98,11 @@ class CheckoutController extends Controller
 
     public function loginCustomer(Request $request)
     {
-        $email = $request->email_account;
-        $password = md5($request->password_account);
-        $result = DB::table('tbl_customer')->where('customer_email', $email)->where('customer_password', $password)->first();
-        if($result){
-            Session::put('customer_id', $result->customer_id);
-            Session::put('customer_name', $result->customer_name);
-            return Redirect::to('/show-checkout');
-        } else {
-            $message = "Wrong email or password";
-            Session::put('message', $message);
-            return Redirect::to('/login-checkout');
-        }
+        $data = $request->all();
+        $customer_email = $data['customer_email'];
+        $customer_password = md5($data['customer_password']);
+        $customer = new Customer();
+        return $customer->getCustomerByEmailPassword($customer_email, $customer_password);
     }
 
     public function orderPlace(Request $request)
@@ -106,8 +112,6 @@ class CheckoutController extends Controller
         // print_r($content);
         // echo "</pre>";
         $data = array();
-        $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->get();
-        $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
         //payment_method
         $data['payment_method'] = $request->paymnet_option;
         $data['payment_status'] = 'In progress';
@@ -135,19 +139,17 @@ class CheckoutController extends Controller
         if($data['payment_method'] == 3){
             echo "Thanh toán trực tuyến";
             //return Redirect::to('/momo');
-        } else if($data['payment_method'] == 1){
+        } else if($data['payment_method'] == 2){
             echo "Thanh toán qua thẻ";
             //return Redirect::to('/cash');
         } else {
-            //get future date > 5 days to daya
-            $date = date('Y-m-d');
-            $date = strtotime($date. ' + 5 days');
-            $date = date('Y-m-d', $date);
-            return view('pages.checkout.cash')->with('cate_produ_o', $cate_product)->with('brand_product', $brand_product)
-            ->with('date', $date);
+            echo "Thanh toán tiền mặt";
+            //return Redirect::to('/bank');
         }
         //return Redirect::to('/payment');
     }
+
+
     public function Authenticate()
     {
         $admin_id = Session::get('name');
@@ -167,7 +169,7 @@ class CheckoutController extends Controller
         ->select('tbl_order.*', 'tbl_customer.*', 'tbl_shipping.*', 'tbl_payment.*')
         ->orderBy('tbl_order.order_id', 'desc')->get();
     
-        $manage_order = view('admin.manage_order')->with('all_order', $all_order);
+        $manage_order = view('admin.order.manage_order')->with('all_order', $all_order);
         return view('admin_layout')->with('admin.manage_order', $manage_order);
     }
 
@@ -183,7 +185,7 @@ class CheckoutController extends Controller
         ->where('tbl_order.order_id', $order_id)
         ->first();
         // /print_r($order_by_id);
-        $view_order = view('admin.view_order')->with('order_by_id', $order_by_id);
+        $view_order = view('admin.order.view_order')->with('order_by_id', $order_by_id);
         return view('admin_layout')->with('admin.view_order', $view_order);
     }
 

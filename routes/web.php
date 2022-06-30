@@ -9,6 +9,7 @@ use App\Http\Controllers\BrandProductController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\VoucherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -126,3 +127,22 @@ Route::get('/manage-order', [CheckoutController::class, 'manageOrder']);
 Route::get('/view-order/{order_id}', [CheckoutController::class, 'viewOrder']);
 
 Route::get('/delete-order/{order_id}', [CheckoutController::class, 'deleteOrder']);
+
+
+//Send Mail
+Route::get('/send-mail', [HomeController::class, 'sendMail']);
+
+//Login Facebook
+Route::get('/login-facebook', [AdminController::class, 'loginFacebook']);
+Route::get('/callback-facebook', [AdminController::class, 'callbackFacebook']);
+
+//Login Google
+Route::get('/login-google', [AdminController::class, 'loginGoogle']);
+Route::get('/admin/google/callback', [AdminController::class, 'callbackGoogle']);
+
+//Check voucher
+Route::post('/check-voucher', [VoucherController::class, 'checkVoucher']);
+Route::get('/add-voucher', [VoucherController::class, 'addVoucher']);
+Route::get('/all-voucher', [VoucherController::class, 'allVoucher']);
+Route::post('/save-voucher', [VoucherController::class, 'saveVoucher']);
+Route::get('/delete-voucher/{voucher_id}', [VoucherController::class, 'deleteVoucher']);

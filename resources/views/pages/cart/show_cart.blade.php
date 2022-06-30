@@ -65,40 +65,55 @@
     </div>
 </section> <!--/#cart_items-->
 <section id="do_action">
-		<div class="container">
+    <form id="useVoucher" method="POST" action="{{URL::to('/check-voucher')}}">
+        <?php $message = Session::get('message');
+            if($message){
+                echo '<span class="text-alert">'.$message.'</span>';
+                Session::put('message',null);   
+            }
+        ?>
+        <div class="col-sm-6">
+            <div class="total_area">
+                <ul>
+                    <li><input type="text" name="voucher" class="form-control" placeholder="Use Discount Voucher"required></li>
+                </ul>                
+                <a class="btn btn-default check_out" onclick="document.getElementById('useVoucher').submit();">Use</a>
+            </div>                       
+        </div>
+    </form>
+	<div class="container">
 
-				<div class="col-sm-6">
-					<div class="total_area">
-						<ul>
-							<li>Cart Sub Total <span>{{Cart::priceTotal(0,',','.').' '.'VNĐ'}}</span></li>
-							<li>Eco Tax <span>{{Cart::tax(0,',','.').' '.'VNĐ'}}</span></li>
-							<li>Shipping Cost <span>Free</span></li>
-							<li>Total <span>{{Cart::total(0,',','.').' '.'VNĐ'}}</span></li>
-						</ul>
-							{{-- <a class="btn btn-default update" href="">Update</a> --}}
+        <div class="col-sm-6">
+            <div class="total_area">
+                <ul>
+                    <li>Cart Sub Total <span>{{Cart::priceTotal(0,',','.').' '.'VNĐ'}}</span></li>
+                    <li>Tax <span>{{Cart::tax(0,',','.').' '.'VNĐ'}}</span></li>
+                    <li>Shipping Cost <span>Free</span></li>
+                    <li>Voucher <span></span></li>
+                    <li>Total <span>{{Cart::total(0,',','.').' '.'VNĐ'}}</span></li>
+                </ul>
+                    {{-- <a class="btn btn-default update" href="">Update</a> --}}
 
-                            <?php
+                    <?php
 
-									$customer_id = Session::get('customer_id');
-									$shipping_id = Session::get('shipping_id');
-									if($customer_id != NULL && $shipping_id == NULL){
+                            $customer_id = Session::get('customer_id');
+                            $shipping_id = Session::get('shipping_id');
+                            if($customer_id != NULL && $shipping_id == NULL){
 
-								?>
-                                <a class="btn btn-default check_out" href="{{URL::to('/show-checkout')}}">Check Out</a>
-								<?php }else if($customer_id != NULL && $shipping_id != NULL){ ?>
-                                    <a class="btn btn-default check_out" href="{{URL::to('/payment')}}">Check Out</a>
+                        ?>
+                        <a class="btn btn-default check_out" href="{{URL::to('/show-checkout')}}">Check Out</a>
+                        <?php }else if($customer_id != NULL && $shipping_id != NULL){ ?>
+                            <a class="btn btn-default check_out" href="{{URL::to('/payment')}}">Check Out</a>
 
-								<?php
-								} else {
-								?>
-                                <a class="btn btn-default check_out" href="{{URL::to('/login-checkout')}}">Check Out</a>
-								<?php } ?>
-					</div>
-							
-					</div>
-				</div>
-			</div>
-		</div>
-	</section><!--/#do_action-->
-    @endforeach    
+                        <?php
+                        } else {
+                        ?>
+                        <a class="btn btn-default check_out" href="{{URL::to('/login-checkout')}}">Check Out</a>
+                        <?php } ?>
+            </div>
+                    
+            </div>
+    </div>
+</section><!--/#do_action-->
+@endforeach    
 @endsection

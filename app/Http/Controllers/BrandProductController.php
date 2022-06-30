@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
-
+use App\Models\Brand;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 
@@ -25,19 +25,22 @@ class BrandProductController extends Controller
     public function addBrandProduct()
     {
         $this->Authenticate();
-        return view('admin.add_brand_product');
+        return view('admin.brand.add_brand_product');
     }
 
     public function saveBrandProduct(Request $request)
     {
         $this->Authenticate();
-        $data = array();
-        $data['brand_name'] = $request->brand_product_name;
-        $data['brand_desc'] = $request->brand_product_desc;
-        $data['brand_status'] = $request->brand_product_status;
-        $data['created_at'] = date('Y-m-d H:i:s');
-        $result = DB::table('tbl_brand_product')->insert($data);
-        if ($result) {
+        $data = $request->all();
+        $brand = new Brand();
+        $brand->brand_name = $data['brand_product_name'];
+        $brand->brand_desc = $data['brand_product_desc'];
+        $brand->brand_status = $data['brand_product_status'];
+        $brand->created_at = date('Y-m-d H:i:s');
+        //update data
+        $brand->updated_at = NULL;
+        $brand->save();
+        if ($brand) {
             $message = "Brand Product Added Successfully";
             Session::put('message', $message);
             return Redirect::to('/add-brand-product');
@@ -52,50 +55,68 @@ class BrandProductController extends Controller
     public function allBrandProduct()
     {
         $this->Authenticate();
-        $all_brand_product = DB::table('tbl_brand_product')->get();
-        $manager_brand_product = view('admin.all_brand_product')->with('all_brand_product', $all_brand_product);
+        $all_brand_product = Brand::all();
+        $manager_brand_product = view('admin.brand.all_brand_product')->with('all_brand_product', $all_brand_product);
         return view('admin_layout')->with('admin.all_brand_product', $manager_brand_product);
     }
 
     public function editBrandProduct($brand_product_id)
     {
         $this->Authenticate();
-        $edit_brand_product = DB::table('tbl_brand_product')->where('brand_id', $brand_product_id)->get();
-        $manager_brand_product = view('admin.edit_brand_product')->with('edit_brand_product', $edit_brand_product);
+        $edit_brand_product = Brand::find($brand_product_id);
+        $manager_brand_product = view('admin.brand.edit_brand_product')->with('edit_brand_product', $edit_brand_product);
         return view('admin_layout')->with('admin.edit_brand_product', $manager_brand_product);
     }
 
     public function updateBrandProduct(Request $request, $brand_product_id)
     {
         $this->Authenticate();
-        $data = array();
-        $data['brand_name'] = $request->brand_product_name;
-        $data['brand_desc'] = $request->brand_product_desc;
-       // $data['brand_status'] = $request->brand_product_status;
-        $data['updated_at'] = date('Y-m-d H:i:s');
-        DB::table('tbl_brand_product')->where('brand_id', $brand_product_id)->update($data);
-        Session::put('message', 'Cập nhật thương hiệu thành công');
-        return Redirect::to('/all-brand-product');
+        $data = $request->all();
+        $brand = Brand::find($brand_product_id);
+        $brand->brand_name = $data['brand_product_name'];
+        $brand->brand_desc = $data['brand_product_desc'];
+        //$brand->brand_status = $data['brand_product_status'];
+        $brand->updated_at = date('Y-m-d H:i:s');
+        $brand->save();
+        if ($brand) {
+            $message = "Brand Product Updated Successfully";
+            Session::put('message', $message);
+            return Redirect::to('/all-brand-product');
+        } else {
+            $message = "Brand Product Not Updated Fail";
+            Session::put('message', $message);
+            return Redirect::to('/all-brand-product');
+        }
     }
 
     public function deleteBrandProduct($brand_product_id)
     {
         $this->Authenticate();
-        DB::table('tbl_brand_product')->where('brand_id', $brand_product_id)->delete();
-        Session::put('message', 'Xóa thương hiệu thành công');
-        return Redirect::to('/all-brand-product');
+        $brand = Brand::find($brand_product_id);
+        $brand->delete();
+        if ($brand) {
+            $message = "Brand Product Deleted Successfully";
+            Session::put('message', $message);
+            return Redirect::to('/all-brand-product');
+        } else {
+            $message = "Brand Product Not Deleted Fail";
+            Session::put('message', $message);
+            return Redirect::to('/all-brand-product');
+        }
     }
 
     public function unactiveBrandProduct($brand_product_id)
     {
         $this->Authenticate();
-        $result = DB::table('tbl_brand_product')->where('brand_id', $brand_product_id)->update(['brand_status' => 0]);
-        if ($result) {
+        $brand = Brand::find($brand_product_id);
+        $brand->brand_status = 0;
+        $brand->save();
+        if ($brand) {
             $message = "Brand Product Unactive Successfully";
             Session::put('message', $message);
             return Redirect::to('/all-brand-product');
         } else {
-            $message = "Brand Product Unactive Fail";
+            $message = "Brand Product Not Unactive Fail";
             Session::put('message', $message);
             return Redirect::to('/all-brand-product');
         }
@@ -104,13 +125,15 @@ class BrandProductController extends Controller
     public function activeBrandProduct($brand_product_id)
     {
         $this->Authenticate();
-        $result = DB::table('tbl_brand_product')->where('brand_id', $brand_product_id)->update(['brand_status' => 1]);
-        if ($result) {
+        $brand = Brand::find($brand_product_id);
+        $brand->brand_status = 1;
+        $brand->save();
+        if ($brand) {
             $message = "Brand Product Active Successfully";
             Session::put('message', $message);
             return Redirect::to('/all-brand-product');
         } else {
-            $message = "Brand Product Active Fail";
+            $message = "Brand Product Not Active Fail";
             Session::put('message', $message);
             return Redirect::to('/all-brand-product');
         }
@@ -119,7 +142,7 @@ class BrandProductController extends Controller
     public function showBrandProduct($brand_id)
     {
         $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->get();
-        $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
+        $brand_product = DB::table('tbl_brand_product')->where('brand_id', $brand_id)->get();
         $brand_name = DB::table('tbl_brand_product')->where('brand_id', $brand_id)->limit(1)->get();
         $brand_by_id = DB::table('tbl_product')->join('tbl_brand_product', 'tbl_product.brand_id', '=', 'tbl_brand_product.brand_id')
         ->where('tbl_product.brand_id', $brand_id)->get();
