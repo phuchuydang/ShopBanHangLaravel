@@ -53,7 +53,7 @@ class VoucherController extends Controller
                     Session::put('voucher', $voucher_arr);
                 }
                 Session::save();
-                return redirect()->back()->with('message', 'Voucher code is available');
+                return redirect()->back()->with('message', 'Voucher code is available')->with('voucher_arr', '$voucher_arr');
             }
             
         } else {
@@ -105,5 +105,11 @@ class VoucherController extends Controller
         $voucher_info = Voucher::find($voucher_id);
         $voucher_info->delete();
         return Redirect::to('/all-voucher');
+    }
+
+    public function removeVoucher()
+    {
+        Session::forget('voucher');
+        return Redirect::to('/show-cart');
     }
 }

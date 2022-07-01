@@ -146,3 +146,4 @@ Route::get('/add-voucher', [VoucherController::class, 'addVoucher']);
 Route::get('/all-voucher', [VoucherController::class, 'allVoucher']);
 Route::post('/save-voucher', [VoucherController::class, 'saveVoucher']);
 Route::get('/delete-voucher/{voucher_id}', [VoucherController::class, 'deleteVoucher']);
+Route::get('/remove-voucher', [VoucherController::class, 'removeVoucher']);

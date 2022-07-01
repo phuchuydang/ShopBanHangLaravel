@@ -29,6 +29,8 @@ class CartController extends Controller
         $percent = $product_info->product_price * 0.1;
         //set taxt
         Cart::tax($percent);
+        //update cart::total = product * quantity where id = $product_id
+        //Cart::update($product_id, array('price' => $product_info->product_price, 'quantity' => $quantity));
        //Cart::destroy();
         return Redirect::to('/show-cart');
     }
@@ -37,12 +39,14 @@ class CartController extends Controller
     {
         $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->get();
         $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
+        //Cart::destroy();
         return view('pages.cart.show_cart')->with('cate_product', $cate_product)->with('brand_product', $brand_product);
     }
 
     public function deleteCart($rowId)
     {
         Cart::update($rowId, 0);
+        Session::forget('voucher');
         return Redirect::to('/show-cart');
     }
 
