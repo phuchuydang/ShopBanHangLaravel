@@ -42,21 +42,30 @@
     <div class="col-sm-7">
         <div class="product-information"><!--/product-information-->
             <img src="images/product-details/new.jpg" class="newarrival" alt="" />
-            <h2>{{$value->product_name}}</h2>
-            <p>Product ID: {{$value->product_id}}</p>
-            <img src="images/product-details/rating.png" alt="" />
             <form action="{{URL::to('/save-cart')}}" method="POST">
-                {{csrf_field()}}
-                <span>
-                    <span>{{number_format($value->product_price).' '.'VNĐ'}}</span>
-                    <label>Quantity:</label>
-                    <input name="quantity" type="number" min="1" value="1" />
-                    <input name="product_id_hidden" type="hidden" min="1" value="{{$value->product_id}}" />
-                    <button type="submit" class="btn btn-fefault cart">
-                        <i class="fa fa-shopping-cart"></i>
-                        Add to cart
-                    </button>
-                </span>
+                <h2>{{$value->product_name}}</h2>
+                <p>Product ID: {{$value->product_id}}</p>
+                <img src="images/product-details/rating.png" alt="" />
+                    {{csrf_field()}}
+                    <span>
+                        <span>{{number_format($value->product_price,0,',','.').' '.'VNĐ'}}</span>
+                        <label>Quantity:</label>
+                        {{-- <input type="hidden" value="{{$value->product_id}}" class="cart_product_id_{{$value->product_id}}">
+                        <input type="hidden" value="{{$value->product_name}}" class="cart_product_name_{{$value->product_id}}">
+                        <input type="hidden" value="{{$value->product_price}}" class="cart_product_price_{{$value->product_id}}">
+                        <input type="hidden" value="{{$value->product_image}}" class="cart_product_image_{{$value->product_id}}">
+                        <input type="hidden" value="{{1}}" class="cart_product_qty_{{$value->product_id}}"> --}}
+                        <input name="quantity" type="number" min="1" value="1" />
+                        <input name="product_id_hidden" type="hidden" min="1" value="{{$value->product_id}}" />
+                        {{-- <button name="add-to-cart" type="button" class="btn btn-default add-to-cart" data-id_product="{{$value->product_id}}">
+                            <i class="fa fa-shopping-cart"></i>
+                            Add to cart
+                        </button> --}}
+                        <button type="submit" class="btn btn-fefault cart">
+                            <i class="fa fa-shopping-cart"></i>
+                            Add to cart
+                        </button>
+                    </span>
             </form>
             <p><b>Availability:</b> In Stock</p>
             <p><b>Condition:</b> New</p>
@@ -128,7 +137,7 @@
                         <div class="single-products">
                             <div class="productinfo text-center">
                                 <img src="{{URL::to('public/uploads/product/'.$value->product_image)}}" alt="" />
-                                <h2>{{number_format($value->product_price).' '.'VNĐ'}}</h2>
+                                <h2>{{number_format($value->product_price,0,',','.').' '.'VNĐ'}}</h2>
                                 <p>{{$value->product_name}}</p>
                                 <button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button>
                             </div>

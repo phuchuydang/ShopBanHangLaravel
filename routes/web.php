@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\VoucherController;
+use App\Http\Controllers\DeliveryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,7 +22,7 @@ use App\Http\Controllers\VoucherController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-//FE
+//Index
 Route::get('/', [HomeController::class, 'index']);
 
 Route::get('/home', [HomeController::class, 'index']);
@@ -32,7 +33,7 @@ Route::get('/category-product-home/{category_id}', [CategoryProductController::c
 //Brand Home
 Route::get('/brand-product-home/{brand_id}', [BrandProductController::class, 'showBrandProduct']);
 
-//BE
+//Admin
 Route::get('/admin', [AdminController::class, 'index']);
 
 Route::get('/dashboard', [AdminController::class, 'showDashboard']);
@@ -41,7 +42,7 @@ Route::get('/logout', [AdminController::class, 'log_out']);
 
 Route::post('/admin-dashboard', [AdminController::class, 'dashboard']);
 
-//myprofile
+//Admin Profile
 Route::get('/myprofile', [AdminController::class, 'showMyProfile']);
 
 //Category Product
@@ -100,9 +101,16 @@ Route::get('/product-detail/{product_id}', [ProductController::class, 'productDe
 
 //Cart
 Route::post('/save-cart', [CartController::class, 'saveCart']);
+
 Route::get('/show-cart', [CartController::class, 'showCart']);
+
 Route::get('/delete-cart/{rowId}', [CartController::class, 'deleteCart']);
+
 Route::post('/update-cart-quantity', [CartController::class, 'updateCartQuantity']);
+
+//Route::get('/update-cart-price', [CartController::class, 'updatePriceTotal']);
+
+Route::get('/delete-all-cart', [CartController::class, 'deleteAllCart']);
 
 //Checkout
 Route::get('/login-checkout', [CheckoutController::class, 'loginCheckOut']);
@@ -134,16 +142,38 @@ Route::get('/send-mail', [HomeController::class, 'sendMail']);
 
 //Login Facebook
 Route::get('/login-facebook', [AdminController::class, 'loginFacebook']);
+
 Route::get('/callback-facebook', [AdminController::class, 'callbackFacebook']);
 
 //Login Google
 Route::get('/login-google', [AdminController::class, 'loginGoogle']);
+
 Route::get('/admin/google/callback', [AdminController::class, 'callbackGoogle']);
 
 //Check voucher
 Route::post('/check-voucher', [VoucherController::class, 'checkVoucher']);
+
 Route::get('/add-voucher', [VoucherController::class, 'addVoucher']);
+
 Route::get('/all-voucher', [VoucherController::class, 'allVoucher']);
+
 Route::post('/save-voucher', [VoucherController::class, 'saveVoucher']);
+
 Route::get('/delete-voucher/{voucher_id}', [VoucherController::class, 'deleteVoucher']);
+
 Route::get('/remove-voucher', [VoucherController::class, 'removeVoucher']);
+
+//Delivery
+Route::get('/delivery-detail', [DeliveryController::class, 'deliveryDetail']);
+
+Route::post('/get-districts', [DeliveryController::class, 'getDistricts']);
+
+Route::post('/add-delivery', [DeliveryController::class, 'addDelivery']);
+
+Route::get('/list-delivery', [DeliveryController::class, 'listDelivery']);
+
+Route::get('/delete-delivery/{delivery_id}', [DeliveryController::class, 'deleteDelivery']);
+
+Route::get('/edit-delivery/{delivery_id}', [DeliveryController::class, 'editDelivery']);
+
+Route::post('/save-delivery', [DeliveryController::class, 'saveDelivery']);

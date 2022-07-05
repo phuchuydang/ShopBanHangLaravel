@@ -39,7 +39,8 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">% for Discount</label>
-                            <textarea style="resize:none" rows="5" name="voucher_percent_discount" class="form-control" id="exampleInputPassword1" required></textarea>
+                            <input type="number"  min="0" max="100" name="voucher_percent_discount"" class="form-control" id="exampleInputEmail1" placeholder="Enter product name" required>
+                
                         </div>
                         <button type="submit" name="add_brand_product" class="btn btn-info">Add Voucher</button>
                     </form>

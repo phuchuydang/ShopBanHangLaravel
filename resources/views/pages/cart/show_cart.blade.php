@@ -19,7 +19,7 @@
                 <thead>
                     <tr class="cart_menu">
                         <td class="image">Image</td>
-                        <td class="description">Description</td>
+                        <td class="description">Name</td>
                         <td class="price">Price</td>
                         <td class="quantity">Quantity</td>
                         <td class="total">Total</td>
@@ -53,7 +53,7 @@
                         <td class="cart_total">
                             <p class="cart_total_price">
                             
-                                {{Cart::priceTotal(0,',','.').' '.'VNĐ'}}
+                                {{number_format($v_content->price * $v_content->qty,0, '.', ' ').' '.'VNĐ'}}
                             </p>
                         </td>
                         <td class="cart_delete">
@@ -63,9 +63,13 @@
                     @endforeach              
                 </tbody>
             </table>
+            @if(Session::has('cart'))
+            <a href="{{URL::to('/delete-all-cart')}}"><input type="submit" name="delete_all" value="Delete All" class="btn btn-default check_out"></a>
+            @endif
         </div>
     </div>
 </section> <!--/#cart_items-->
+@if(Session::has('cart'))
 <section id="do_action">
     <form method="POST" action="{{URL::to('/check-voucher')}}">
         {{ csrf_field() }}
@@ -86,11 +90,13 @@
                 </ul>                
                 {{-- <a class="btn btn-default check_out" onclick="document.getElementById('useVoucher').submit()">Use</a> --}}
                 <ul>
-                    <input type="submit" name="use_voucher" value="Use" class="btn btn-default check_out">
+                    <input type="submit" name="use_voucher" value="Use" class="btn btn-default use_voucher">
                 </ul> 
             </div>                       
         </div>
     </form>
+@endif
+    @if(Session::has('cart'))
 	<div class="container">
 
         <div class="col-sm-6">
@@ -112,7 +118,7 @@
                                 @endif
                             @endforeach  
                         @else
-                            0
+                            None
                         @endif 
                         
      
@@ -159,5 +165,6 @@
                     
             </div>
     </div>
+    @endif
 </section><!--/#do_action-->
 @endsection

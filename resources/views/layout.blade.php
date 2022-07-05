@@ -20,7 +20,8 @@
    
     <script src="js/respond.min.js"></script>
     <![endif]-->   
-	<script src="{{URL::to('public/frontend/js/html5shiv.js')}}"></script>    
+	<script src="{{URL::to('public/frontend/js/html5shiv.js')}}"></script> 
+	<script src="{{URL::to('https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')}}"></script>   
     <link rel="shortcut icon" href="{{('public/frontend/images/ico/favicon.ico')}}">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
@@ -471,30 +472,44 @@
 	<script type="text/javascript">
 		// $(document).ready(function(){
 		// 	$('.add-to-cart').click(function(){
-		// 		var id = $(this).data('product_id');
+		// 		var id = $(this).data('id_product');
 		// 		var cart_product_id = $('.cart_product_id_' + id).val();
 		// 		var cart_product_name = $('.cart_product_name_' + id).val();
-		// 		var cart_product_image = $('.cart_product_image_' + id).val();
 		// 		var cart_product_price = $('.cart_product_price_' + id).val();
+		// 		var cart_product_image = $('.cart_product_image_' + id).val();
 		// 		var cart_product_qty = $('.cart_product_qty_' + id).val();
-		// 		var token = $('input[name="_token"]').val();
-		// 		// swal("Hello world!");
+		// 		var _token = $('input[name="_token"]').val();
+		// 		//add to array
 		// 		$.ajax({
-		// 			//using ajax
-		// 			url: "{{url('/add-to-cart-ajax')}}",
-		// 			method: "POST",
+		// 			url: '{{url('/save-cart')}}',
+		// 			method: 'POST',
 		// 			data: {
 		// 				cart_product_id: cart_product_id,
 		// 				cart_product_name: cart_product_name,
-		// 				cart_product_image: cart_product_image,
 		// 				cart_product_price: cart_product_price,
+		// 				cart_product_image: cart_product_image,
 		// 				cart_product_qty: cart_product_qty,
-		// 				_token: token
+		// 				_token: _token
 		// 			},
 		// 			success: function(data){
-		// 				swal("Hello world!")
+		// 				swal({
+		// 					title: "Add " + cart_product_name + " to cart successfully!",
+        //                         text: "You can continue to purchase or go to the shopping cart to proceed to checkout",
+        //                         showCancelButton: true,
+        //                         cancelButtonText: "Countinue Shopping",
+        //                         confirmButtonClass: "btn-success",
+        //                         confirmButtonText: "Go to Shopping Cart",
+        //                         closeOnConfirm: true
+        //                     });
+        //                     // function(isConfirm){
+		// 					// 	if (isConfirm) {
+		// 					// 		window.location.href = '{{url('/cart')}}';
+		// 					// 	}
+		// 					// });
+		// 				// alert(data);
 		// 			}
 		// 		});
+			
 		// 	});
 		// });
 	</script>

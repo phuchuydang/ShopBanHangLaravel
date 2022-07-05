@@ -13,6 +13,7 @@ use Whoops\Run;
 
 class CartController extends Controller
 {
+
     public function saveCart(Request $request)
     {
         $product_id = $request->product_id_hidden;
@@ -40,6 +41,7 @@ class CartController extends Controller
         $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->get();
         $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
         //Cart::destroy();
+        
         return view('pages.cart.show_cart')->with('cate_product', $cate_product)->with('brand_product', $brand_product);
     }
 
@@ -55,7 +57,68 @@ class CartController extends Controller
         $rowId = $request->id_product;
         $qty = $request->quantity;
         Cart::update($rowId, $qty);
+        $priceTotal = $qty * Cart::get($rowId)->price;
+        Cart::update($rowId, ['priceTotal' => $priceTotal]);
         return Redirect::to('/show-cart');
     }
 
+    public function deleteAllCart()
+    {
+        Cart::destroy();
+        Session::forget('cart');
+        Session::forget('voucher');
+        return Redirect::to('/show-cart');
+    }
 }
+
+
+
+
+    // Dung Ajax va Swal
+    // public function saveCart(Request $request)
+    // {
+    //     // $data = $request->all();
+    //     // $session_id = substr(md5(microtime()), 0, 20);
+    //     // $cart = Session::get('cart');
+    //     // if ($cart) {
+    //     //    $is_available = 0;
+    //     //       foreach ($cart as $key => $value) {
+    //     //         if ($value['product_id'] == $data['product_id']) {
+    //     //              $is_available++;
+    //     //              $cart[$key]['product_quantity'] = $cart[$key]['product_quantity'] + $data['product_quantity'];
+    //     //              $cart[$key]['product_price'] = $cart[$key]['product_price'] + $data['product_price'];
+    //     //              $cart[$key]['product_total'] = $cart[$key]['product_total'] + $data['product_total'];
+    //     //         }
+    //     //       }
+    //     //         if ($is_available == 0) {
+    //     //             $cart[] = array(
+    //     //                 'session_id' => $session_id,
+    //     //                 'product_id' => $data['cart_product_id'],
+    //     //                 'product_name' => $data['cart_product_name'],
+    //     //                 'product_price' => $data['cart_product_price'],
+    //     //                 'product_qty' => $data['cart_product_qty'],
+    //     //                 'product_image' => $data['cart_product_image'],
+                    
+    //     //             );
+    //     //             Session::put('cart', $cart);
+    //     //         }
+    //     // } else {
+    //     //     $cart[] = array(
+    //     //         'session_id' => $session_id,
+    //     //         'product_id' => $data['cart_product_id'],
+    //     //         'product_name' => $data['cart_product_name'],
+    //     //         'product_price' => $data['cart_product_price'],
+    //     //         'product_qty' => $data['cart_product_qty'],
+    //     //         'product_image' => $data['cart_product_image'],
+            
+    //     //     );
+    //     //     Session::put('cart', $cart);
+    //     // }
+    //     // Session::save();
+    //     //echo '<script>alert("Thêm sản phẩm thành công")</script>';
+    //     // echo '<pre>';
+    //     // print_r(Session::get('cart'));
+    //     // echo '</pre>';
+    //     Cart::destroy();
+    // }
+

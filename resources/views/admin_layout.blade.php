@@ -14,6 +14,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- Custom CSS -->
 <link href="{{asset('public/backend/css/style.css')}}" rel='stylesheet' type='text/css' />
 <link href="{{asset('public/backend/css/style-responsive.css')}}" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- font CSS -->
 <link href='//fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
 <!-- font-awesome icons -->
@@ -28,9 +29,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('public/backend/js/raphael-min.js')}}"></script>
 <script src="{{asset('public/backend/js/morris.js')}}"></script>
 <script src="{{asset('public/backend/ckeditor5-build-classic/ckeditor.js')}}"></script>
-<script>
+{{-- <script>
     CKEDITOR.replace('ckeditor1');
-</script>
+</script> --}}
 </head>
 <body>
 <section id="container">
@@ -105,11 +106,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 <li class="sub-menu">
                     <a href="javascript:;">
                         <i class="fa fa-list-alt" aria-hidden="true"></i>
-                        <span>Product Category</span>
+                        <span>Category</span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/add-category-product')}}">Add Product Category</a></li>
-						<li><a href="{{URL::to('/all-category-product')}}">List Product Category</a></li>
+						<li><a href="{{URL::to('/add-category-product')}}">Add Category</a></li>
+						<li><a href="{{URL::to('/all-category-product')}}">List Category</a></li>
                         {{-- <li><a href="grids.html">Grids</a></li> --}}
                     </ul>
                 </li>
@@ -117,11 +118,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<li class="sub-menu">
                     <a href="javascript:;">
                         <i class = "fa fa-adjust custom" aria-hidden="true"></i>
-                        <span>Product Brand</span>
+                        <span>Brand</span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/add-brand-product')}}">Add Brand Product</a></li>
-						<li><a href="{{URL::to('/all-brand-product')}}">List Brand Product</a></li>
+						<li><a href="{{URL::to('/add-brand-product')}}">Add Brand </a></li>
+						<li><a href="{{URL::to('/all-brand-product')}}">List Brand</a></li>
                         {{-- <li><a href="grids.html">Grids</a></li> --}}
                     </ul>
                 </li>
@@ -147,6 +148,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<li><a href="{{URL::to('/add-product')}}">Add Product</a></li>
 						<li><a href="{{URL::to('/all-product')}}">List Product</a></li>
                         {{-- <li><a href="grids.html">Grids</a></li> --}}
+                    </ul>
+                </li>
+
+                <li class="sub-menu">
+                    <a >
+                        <i class='fa-solid fa-truck-fast'></i>
+                        <span>Delivery</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/delivery-detail')}}">Add Delivery</a></li>
+						<li><a href="{{URL::to('/list-delivery')}}">List Delivery</a></li>
+                     
                     </ul>
                 </li>
                 
@@ -179,7 +192,80 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{asset('public/backend/js/jquery.nicescroll.js')}}"></script>
 <!--[if lte IE 8]><script language="javascript" type="text/javascript" src="js/flot-chart/excanvas.min.js"></script><![endif]-->
 <script src="{{asset('public/backend/js/jquery.scrollTo.js')}}"></script>
+<script>
+    // function fetch_delivery(){
+    //     var _token = $('input[name="_token"]').val();
+    //     $.ajax({
+    //             url:'{{url('/select-delivery')}}',
+    //             method : 'POST',
+    //             data: {
+    //                 _token: _token
+    //             },
+    //             success: function(data) {
+    //                 $('#load_delivery').html(data);
+    //             }
+    //         });
+    // }
+    // fetch_delivery();
+    $(document).ready(function() {
+       
+        $('.add_delevery').click(function() {
+            var city = $('.city').val();
+            var province = $('.province').val();
+            var ward = $('.ward').val();
+            var feeship = $('.feeship').val();
+            var _token = $('input[name="_token"]').val();
+            // alert(city +"\n" + province+"\n"  + ward+"\n" + feeship);
+            $.ajax({
+                url:'{{url('/add-delivery')}}',
+                method : 'POST',
+                data: {
+                    city: city,
+                    province: province,
+                    ward: ward,
+                    feeship: feeship,
+                    _token: _token
+                },
+                success: function(data) {
+                    alert('Add Feeship Success');
+                    //reset form
+                    $('.city').val('');
+                    $('.province').val('Choose Province');
+                    $('.ward').val('Choose Ward');
+                    $('.feeship').val('');
+                }
+            });
+           
+        });
 
+        $('.choose').on('change', function() {
+            var action = $(this).attr('id');
+            var ma_id = $(this).val();
+            var _token = $('input[name="_token"]').val();
+            var result = '';
+            if(action == 'city'){
+                result = 'province'
+            } else {
+                result = 'ward'
+            }
+            $.ajax({
+                url:'{{url('/get-districts')}}',
+                method : 'POST',
+                data: {
+                    ma_id: ma_id,
+                    action: action,
+                    _token: _token
+                },
+                success: function(data) {
+                    $('#'+result).html(data);
+                }
+            });
+        });
+        
+     
+    });
+    
+</script>
 <!-- morris JavaScript -->	
 <script>
 	$(document).ready(function() {
@@ -193,7 +279,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		  jQuery(this).closest('.small-graph-box').fadeOut(200);
 		  return false;
 	   });
-	
+    });
+    
+</script>
+
 
 </body>
 </html>
