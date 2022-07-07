@@ -110,6 +110,6 @@ class VoucherController extends Controller
     public function removeVoucher()
     {
         Session::forget('voucher');
-        return Redirect::to('/show-cart');
+        return Redirect::to('/show-carts');
     }
 }

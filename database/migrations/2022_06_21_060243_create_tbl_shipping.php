@@ -15,12 +15,12 @@ return new class extends Migration
     {
         Schema::create('tbl_shipping', function (Blueprint $table) {
             $table->increments('shipping_id');
-            $table->integer('customer_id');
             $table->string('shipping_name');
             $table->string('shipping_phone');
             $table->string('shipping_address');
             $table->string('shipping_email');
             $table->string('shipping_note');
+            $table->integer('shipping_method');
             $table->timestamps();
         });
     }

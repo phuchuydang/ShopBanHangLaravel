@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('tbl_order_details', function (Blueprint $table) {
             $table->increments('order_details_id');
-            $table->integer('order_id');
+            $table->string('order_code');
             $table->integer('product_id');
             $table->string('product_name');
             $table->integer('product_price');

@@ -11,7 +11,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\DeliveryController;
-
+use App\Http\Controllers\OrderController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -100,13 +100,20 @@ Route::get('/unactive-product/{product_id}', [ProductController::class, 'unactiv
 Route::get('/product-detail/{product_id}', [ProductController::class, 'productDetail']);
 
 //Cart
-Route::post('/save-cart', [CartController::class, 'saveCart']);
+
+Route::post('/add-cart', [CartController::class, 'addCart']);
 
 Route::get('/show-cart', [CartController::class, 'showCart']);
 
+Route::get('/show-carts', [CartController::class, 'showCarts']);
+
 Route::get('/delete-cart/{rowId}', [CartController::class, 'deleteCart']);
 
+Route::post('/update-cart-quantities', [CartController::class, 'updateCartQuantities']);
+
 Route::post('/update-cart-quantity', [CartController::class, 'updateCartQuantity']);
+
+Route::get('/delete-item/{session_id}', [CartController::class, 'deleteItem']);
 
 //Route::get('/update-cart-price', [CartController::class, 'updatePriceTotal']);
 
@@ -114,10 +121,20 @@ Route::get('/delete-all-cart', [CartController::class, 'deleteAllCart']);
 
 //Checkout
 Route::get('/login-checkout', [CheckoutController::class, 'loginCheckOut']);
+
 Route::post('/login-customer', [CheckoutController::class, 'loginCustomer']);
+
 Route::get('/show-checkout', [CheckoutController::class, 'checkOut']);
+
 Route::post('/save-checkout', [CheckoutController::class, 'saveCheckOut']);
+
 Route::get('/logout-checkout', [CheckoutController::class, 'logoutCheckOut']);
+
+Route::post('/get-districts-customer', [CheckoutController::class, 'getDistrictsCustomer']);
+
+Route::post('/cal-feeship', [CheckoutController::class, 'calFeeship']);
+
+Route::post('/confirm-order' , [CheckoutController::class, 'confirmOrder']);
 
 //Customer
 Route::post('/add-customer', [CheckoutController::class, 'addCustomer']);
@@ -130,12 +147,13 @@ Route::post('/order-place', [CheckoutController::class, 'orderPlace']);
 Route::post('/search', [HomeController::class, 'search']);
 
 //Manage order
-Route::get('/manage-order', [CheckoutController::class, 'manageOrder']);
+Route::get('/manage-order', [OrderController::class, 'manageOrder']);
 
-Route::get('/view-order/{order_id}', [CheckoutController::class, 'viewOrder']);
+Route::get('/view-order/{order_code}', [OrderController::class, 'viewOrder']);
 
-Route::get('/delete-order/{order_id}', [CheckoutController::class, 'deleteOrder']);
+// Route::get('/delete-order/{order_id}', [CheckoutController::class, 'deleteOrder']);
 
+Route::get('/print_order/{order_code}', [OrderController::class, 'printOrder']);
 
 //Send Mail
 Route::get('/send-mail', [HomeController::class, 'sendMail']);
@@ -177,3 +195,4 @@ Route::get('/delete-delivery/{delivery_id}', [DeliveryController::class, 'delete
 Route::get('/edit-delivery/{delivery_id}', [DeliveryController::class, 'editDelivery']);
 
 Route::post('/save-delivery', [DeliveryController::class, 'saveDelivery']);
+

@@ -35,9 +35,11 @@ class Customer extends Model
             Session::put('customer_id', $customer->customer_id);
             Session::put('customer_name', $customer->customer_name);
             Session::put('message', 'Login Successfully');
-            return Redirect::to('/show-checkout');
+            Session::save();
+            return  Redirect::to('/');
         } else {
             Session::put('message', 'Login Failed');
+            Session::save();
             return Redirect::to('/login-checkout');
         }
     }

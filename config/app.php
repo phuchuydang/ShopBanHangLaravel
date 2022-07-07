@@ -195,6 +195,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        Barryvdh\Dompdf\ServiceProvider::class,
 
     ],
 
@@ -227,7 +228,7 @@ return [
         'Eloquent' => Illuminate\Database\Eloquent\Model::class,
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
-
+        'PDF' =>  Barryvdh\Dompdf\Facade\Pdf::class,
        
     ])->toArray(),
 

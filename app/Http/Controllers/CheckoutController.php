@@ -21,14 +21,22 @@ use Gloudemans\Shoppingcart\Facades\Cart;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 session_start();
+use App\Models\City;
+use App\Models\Province;
+use App\Models\Ward;
+use App\Models\Feeship;
+use App\Models\Order;
+use App\Models\OrderDetail;
+use App\Models\Shipping;
 class CheckoutController extends Controller
 {
+   
     
     public function loginCheckOut(Request $request)
     {
         $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->get();
         $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
-
+        
         return view('pages.checkout.login_checkout')->with('cate_product', $cate_product)->with('brand_product', $brand_product);
     }
 
@@ -53,9 +61,9 @@ class CheckoutController extends Controller
         //getuser by session
         $customer_id = Session::get('customer_id');
         $customer = DB::table('tbl_customer')->where('customer_id', $customer_id)->first();
-        
+        $cities = DB::table('devvn_tinhthanhpho')->orderBy('matp','asc')->get();
         return view('pages.checkout.show_checkout')->with('cate_product', $cate_product)->with('brand_product', $brand_product)->with('customer', $customer)
-        ->with('customer_id', $customer_id);
+        ->with('customer_id', $customer_id)->with('cities', $cities);
     }
 
     public function saveCheckOut(Request $request)
@@ -102,6 +110,8 @@ class CheckoutController extends Controller
         $customer_email = $data['customer_email'];
         $customer_password = md5($data['customer_password']);
         $customer = new Customer();
+        Session::put('customer_email', $customer_email);
+        Session::save() ;
         return $customer->getCustomerByEmailPassword($customer_email, $customer_password);
     }
 
@@ -188,6 +198,95 @@ class CheckoutController extends Controller
         $view_order = view('admin.order.view_order')->with('order_by_id', $order_by_id);
         return view('admin_layout')->with('admin.view_order', $view_order);
     }
+
+    public function getDistrictsCustomer(Request $request){
+        $data = $request->all();
+        if($data['action']){
+                $output = '';
+                if($data['action'] == 'city'){
+                    $output= '<option>Choose Province</option>';
+                    $districts = Province::where('matp', $data['ma_id'])->orderby('maqh','ASC')->get();
+                    foreach ($districts as $district) {
+                        $output = '<option value="'.$district->maqh.'">'.$district->nameprovince.'</option>';
+                        echo $output;
+                    }
+                    
+                } else {
+                    $output = '<option value="">Choose Ward</option>';
+                    $wards = Ward::where('maqh', $data['ma_id'])->orderby('xaid','ASC')->get();;
+                    foreach ($wards as $ward) {
+                        $output = '<option value="'.$ward->xaid.'">'.$ward->nameward.'</option>';
+                        echo $output;
+                    }
+
+                }
+                
+        }
+    }
+
+    public function calFeeship(Request $request){
+        $data = $request->all();
+        if($data['city']){
+            $city = $data['city'];
+            $district = $data['province'];
+            $ward = $data['ward'];
+            $feeship = Feeship::where('feeship_matp', $city)->where('feeship_maqh', $district)->where('feeship_xaid', $ward)->get();
+            if($feeship){
+                foreach ($feeship as $v_feeship) {
+                    Session::put('feeship', $v_feeship->feeship_price);
+                    Session::save();
+                }
+            } else {
+                Session::put('feeship', 0);
+                Session::save();
+            }
+        }
+        // return $data;
+       
+    }
+
+    public function confirmOrder(Request $request){
+        date_default_timezone_set('Asia/Ho_Chi_Minh');
+        $data = $request->all();
+        $shipping = new Shipping;
+        $shipping->shipping_name = $data['shipping_name'];
+        $shipping->shipping_email = $data['shipping_email'];
+        $shipping->shipping_phone = $data['shipping_phone'];
+        $shipping->shipping_address = $data['shipping_address'];
+        $shipping->shipping_note = $data['shipping_note'];
+        $shipping->shipping_method = $data['shipping_method'];
+        $shipping->created_at = now();
+        $shipping->updated_at = NULL;
+        $shipping->save();
+        $shipping_id = $shipping->shipping_id;
+        $order = new Order;
+        $order->customer_id = Session::get('customer_id');
+        $order->shipping_id = $shipping->shipping_id;
+        $order->order_status = 1;
+        $code = substr(md5(microtime()), rand(0, 26), 5);
+        $order->order_code = $code;
+        $order->created_at = now();
+        $order->updated_at = NULL;
+        $order->save();
+
+    
+        if(Session::get('cart')){
+            $cart = Session::get('cart');
+            foreach ($cart as $key => $value) {
+                $order_detail = new OrderDetail;
+                $order_detail->order_code = $code;
+                $order_detail->product_id = $cart[$key]['product_id'];
+                $order_detail->product_name = $cart[$key]['product_name'];
+                $order_detail->product_price = $cart[$key]['product_price'];
+                $order_detail->product_voucher = $data['voucher_code'];
+                $order_detail->product_sales_quantity = $cart[$key]['product_qty'];
+                $order_detail->created_at = now();
+                $order_detail->updated_at = NULL;
+                $order_detail->save();
+            }
+        } 
+    }
+
 
 
 }

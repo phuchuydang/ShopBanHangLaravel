@@ -15,7 +15,7 @@
     <link href="{{asset('public/frontend/css/animate.css')}}" rel="stylesheet">
 	<link href="{{asset('public/frontend/css/main.css')}}" rel="stylesheet">
 	<link href="{{asset('public/frontend/css/responsive.css')}}" rel="stylesheet">
-	<link href="{{asset('public/frontend/css/style.css')}}" rel="stylesheet">
+	{{-- <link href="{{asset('public/frontend/css/style.css')}}" rel="stylesheet"> --}}
     <!--[if lt IE 9]>
    
     <script src="js/respond.min.js"></script>
@@ -470,48 +470,213 @@
 	{{-- <script src="{{asset('public/frontend/js/sweetalert.js')}}"></script> --}}
 	<script src="{{asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
 	<script type="text/javascript">
-		// $(document).ready(function(){
-		// 	$('.add-to-cart').click(function(){
-		// 		var id = $(this).data('id_product');
-		// 		var cart_product_id = $('.cart_product_id_' + id).val();
-		// 		var cart_product_name = $('.cart_product_name_' + id).val();
-		// 		var cart_product_price = $('.cart_product_price_' + id).val();
-		// 		var cart_product_image = $('.cart_product_image_' + id).val();
-		// 		var cart_product_qty = $('.cart_product_qty_' + id).val();
-		// 		var _token = $('input[name="_token"]').val();
-		// 		//add to array
-		// 		$.ajax({
-		// 			url: '{{url('/save-cart')}}',
-		// 			method: 'POST',
-		// 			data: {
-		// 				cart_product_id: cart_product_id,
-		// 				cart_product_name: cart_product_name,
-		// 				cart_product_price: cart_product_price,
-		// 				cart_product_image: cart_product_image,
-		// 				cart_product_qty: cart_product_qty,
-		// 				_token: _token
-		// 			},
-		// 			success: function(data){
-		// 				swal({
-		// 					title: "Add " + cart_product_name + " to cart successfully!",
-        //                         text: "You can continue to purchase or go to the shopping cart to proceed to checkout",
-        //                         showCancelButton: true,
-        //                         cancelButtonText: "Countinue Shopping",
-        //                         confirmButtonClass: "btn-success",
-        //                         confirmButtonText: "Go to Shopping Cart",
-        //                         closeOnConfirm: true
-        //                     });
-        //                     // function(isConfirm){
-		// 					// 	if (isConfirm) {
-		// 					// 		window.location.href = '{{url('/cart')}}';
-		// 					// 	}
-		// 					// });
-		// 				// alert(data);
-		// 			}
-		// 		});
-			
-		// 	});
-		// });
+			$(document).ready(function(){
+			$('.send_order').click(function(){
+				swal({
+						title: "Yay! Your did it >.<. ",
+						text: "Please comfirm to order",
+						icon: "success",
+						//2 buttons
+						buttons : {
+							cancel: {
+								text: "No",
+								value: null,
+								visible: true,
+								className: "",
+								closeModal: true,
+							},
+							confirm: {
+								text: "Confirm",
+								// value: true,
+								// visible: true,
+								// className: "",
+								// closeModal: true
+								//daneger
+								value: true,
+								visible: true,
+								className: "",
+								closeModal: true
+								
+							}
+						}
+					
+					}).then((value) => {
+						if (value) {
+							
+							var shipping_email = $('.shipping_email').val();
+							var shipping_name = $('.shipping_name').val();
+							var shipping_address = $('.shipping_address').val();
+							var shipping_phone = $('.shipping_phone').val();
+							var shipping_note = $('.shipping_note').val();
+							var voucher_code = $('.voucher_code').val();
+							var shipping_method = $('.shipping_method').val();
+							var _token = $('input[name="_token"]').val();
+
+							//add to array
+							$.ajax({
+								url: '{{url('/confirm-order')}}',
+								method: 'POST',
+								data: {
+									shipping_email: shipping_email,
+									shipping_name: shipping_name,
+									shipping_address: shipping_address,
+									shipping_phone: shipping_phone,
+									shipping_note: shipping_note,
+									voucher_code: voucher_code,
+									shipping_method: shipping_method,
+									_token: _token
+								},
+								success: function(data){
+									swal("Confirm Success", "Thanks for your ordering", "success");
+								},
+								//set timeout
+								timeout: 3000,
+								
+							});
+
+									}
+					});
+				
+			});
+		});
+
 	</script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$('.add-to-cart').click(function(){
+				var id = $(this).data('id_product');
+				var cart_product_id = $('.cart_product_id_' + id).val();
+				var cart_product_name = $('.cart_product_name_' + id).val();
+				var cart_product_price = $('.cart_product_price_' + id).val();
+				var cart_product_image = $('.cart_product_image_' + id).val();
+				var cart_product_qty = $('.cart_product_qty_' + id).val();
+				var _token = $('input[name="_token"]').val();
+			
+				//add to array
+				// alert(cart_product_id + " "+);
+				$.ajax({
+					url: '{{url('/add-cart')}}',
+					method: 'POST',
+					data: {
+						cart_product_id: cart_product_id,
+						cart_product_name: cart_product_name,
+						cart_product_price: cart_product_price,
+						cart_product_image: cart_product_image,
+						cart_product_qty: cart_product_qty,
+						_token: _token
+					},
+					success: function(data){
+						swal({
+						title: "Add " + cart_product_name + " to cart successfully!",
+						text: "You can continue to purchase or go to the shopping cart to proceed to checkout",
+						icon: "success",
+						//2 buttons
+						buttons : {
+							cancel: {
+								text: "Continue Shopping",
+								value: null,
+								visible: true,
+								className: "",
+								closeModal: true,
+							},
+							confirm: {
+								text: "Go to Shopping Cart",
+								value: true,
+								visible: true,
+								className: "",
+								closeModal: true
+							}
+						}
+					
+					}).then((value) => {
+						if (value) {
+							window.location.href = "{{url('/show-carts')}}";
+						}
+					});
+						
+					
+					}
+				});
+				//swal("Hello world!");
+			
+			});
+		});
+			$(document).ready(function(){
+				$('.choose').on('change', function() {
+					var action = $(this).attr('id');
+					var ma_id = $(this).val();
+					var _token = $('input[name="_token"]').val();
+					var result = '';
+					if(action == 'city'){
+						result = 'province'
+					} else {
+						result = 'ward'
+					}
+					$.ajax({
+						url:'{{url('/get-districts-customer')}}',
+						method : 'POST',
+						data: {
+							ma_id: ma_id,
+							action: action,
+							_token: _token
+						},
+						success: function(data) {
+							$('#'+result).html(data);
+						}
+					});
+				});
+			});
+
+	</script>
+
+{{-- <script type="text/javascript">
+	$(document).ready(function(){
+		$('.cal_feeship').click(function(){
+		
+			var feeship = $('.feeship').val();
+			var city = $('.city').val();
+			var province = $('.province').val();
+			var ward = $('.ward').val();
+			var _token = $('input[name="_token"]').val();
+			if(city == ''){
+				swal({
+					title: "Please choose city!",
+					text: "",
+					icon: "warning",
+					button: "OK",
+				});
+			} else if(province == ''){
+				swal({
+					title: "Please choose province!",
+					text: "",
+					icon: "warning",
+					button: "OK",
+				});
+			} else if(ward == ''){
+				swal({
+					title: "Please choose ward!",
+					text: "",
+					icon: "warning",
+					button: "OK",
+				});
+			} else {
+				$.ajax({
+					url:'{{url('/cal-feeship')}}',
+					method : 'POST',
+					data: {
+						feeship: feeship,
+						city: city,
+						province: province,
+						ward: ward,
+						_token: _token
+					},
+					success: function(data) {
+						
+					}
+				});
+			}
+		});
+	});
+</script> --}}
 </body>
 </html>
