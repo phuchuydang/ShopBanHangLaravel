@@ -26,6 +26,7 @@
 	<script src="{{URL::to('public/frontend/js/html5shiv.js')}}"></script> 
 	<script src="{{URL::to('https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')}}"></script>   
 	<script src="{{URL::to('https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js')}}"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
     <link rel="shortcut icon" href="{{('public/frontend/images/ico/favicon.ico')}}">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
@@ -69,8 +70,8 @@
 					<div class="col-sm-6">
 						<div class="social-icons pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="{{URL::to('https://www.facebook.com/dphuy.tdt/')}}"><i class="fa fa-facebook"></i></a></li>
-								<li><a href="{{URL::to('https://github.com/dphuytdt')}}"><i class="fa fa-github"></i></a></li>
+								<li><a href="{{URL::to('https://www.facebook.com/dphuy.tdt/')}}"><i class="fa-brands fa-facebook"></i></a></li>
+								<li><a href="{{URL::to('https://github.com/dphuytdt')}}"><i class="fa-brands fa-github"></i></a></li>
 								{{-- <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
 								<li><a href="#"><i class="fa fa-dribbble"></i></a></li>
 								<li><a href="#"><i class="fa fa-google-plus"></i></a></li> --}}
@@ -141,6 +142,7 @@
 
 
 								?>
+								<li><a href="{{URL::to('/video-shop')}}"><i class="fas fa-newspaper"></i>News</a></li>
 								{{-- <li><a href="{{URL::to('/show-checkout')}}"><i class="fa fa-crosshairs"></i> Checkout</a></li> --}}
 								<li><a href="{{URL::to('/logout-checkout')}}"><i class="fa fa-lock"></i> Logout</a></li>
 
@@ -149,12 +151,13 @@
 								else {
 
 								?>
-									
+									<li><a href="{{URL::to('/video-shop')}}"><i class="fas fa-newspaper"></i> News</a></li>
 									<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-lock"></i> Login</a></li>
 								<?php 
 
 									}
 								?>
+								
 							</ul>
 						</div>
 					</div>

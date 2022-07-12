@@ -17,6 +17,7 @@ return new class extends Migration
             $table->increments('video_id');
             $table->string('video_title');
             $table->string('video_link');
+            $table->string('video_image');
             $table->mediumText('video_desc');
         });
     }

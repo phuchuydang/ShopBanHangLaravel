@@ -52,7 +52,9 @@
 </a>
     @endforeach  
 </div><!--features_items-->
-
+{{-- <ul class="pagination pagination-sm m-t-none m-b-none">
+    {{$all_product->links()}}
+ </ul> --}}
 
 {{-- <div class="category-tab"><!--category-tab-->
     <div class="col-sm-12">

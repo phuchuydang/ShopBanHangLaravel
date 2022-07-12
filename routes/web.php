@@ -257,3 +257,13 @@ Route::get('/video', [VideoController::class, 'video']);
 Route::post('/load_video', [VideoController::class, 'loadVideo']);
 
 Route::post('/del-video', [VideoController::class, 'deleteVideo']);
+
+Route::get('/add-video', [VideoController::class, 'addVideo']);
+
+Route::post('/save-video', [VideoController::class, 'saveVideo']);
+
+Route::get('/edit-video/{video_id}', [VideoController::class, 'editVideo']);
+
+Route::post('/update-video', [VideoController::class, 'updateVideo']);
+
+Route::get('/video-shop', [VideoController::class, 'videoShop']);

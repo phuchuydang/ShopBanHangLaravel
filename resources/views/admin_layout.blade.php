@@ -32,11 +32,65 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{URL::to('https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js')}}"></script>
 <script src="{{URL::to('https://cdn.ckeditor.com/ckeditor5/34.2.0/classic/ckeditor.js')}}"></script>
 
-{{-- <script type="text/javascript">
-    // CKEDITOR.replace('ck_editor1');
-    //ck ck_editor1
-    CKEDITOR.replace('ck_editor1');
-</script> --}}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('.add_video').click(function() {
+            var video_title = $('input[name="video_title"]').val();
+            var video_link = $('input[name="video_link"]').val();
+            var video_desc = $('textarea[name="video_desc"]').val();
+            //var video_image =  $('#video-image')[0].files;
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: "{{url('/save-video')}}",
+                type: "POST",
+                data: {
+                    video_title: video_title,
+                    video_link: video_link,
+                    video_desc: video_desc,
+                   
+                    _token: _token
+                },
+                success: function(data) {
+                    swal("Success", "Add video success", "success");
+                    setTimeout(function(){
+                        location.reload();
+                    }, 1000);
+                }
+                ,error: function(data) {
+                    swal("Error", "Add video error", "error");
+                }
+            });
+        });
+
+        $('.save_video').click(function(){
+            var video_id = $('input[name="video_id"]').val();
+            var video_title = $('input[name="video_title"]').val();
+            var video_link = $('input[name="video_link"]').val();
+           
+            var video_desc = $('textarea[name="video_desc"]').val();
+            var _token = $('input[name="_token"]').val();
+            //alert(video_id +"\n" + video_title + "\n" + video_link + "\n" + video_desc + "\n" + _token);
+            $.ajax({
+                url: "{{url('/update-video')}}",
+                type: "POST",
+                data: {
+                    video_id: video_id,
+                    video_title: video_title,
+                    video_link: video_link,
+                    video_desc: video_desc,
+                    _token: _token
+                },
+                success: function(data) {
+                    swal("Success", "Update video success", "success");
+                    setTimeout(function(){
+                        location.href = "{{url('/video')}}";
+                    }, 1000);
+                }
+            });
+        });
+       
+    });
+</script>
 <script type="text/javascript">
     $(document).ready(function() {
         load_video();
@@ -57,6 +111,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                     $('#video_load').html(data);
                 }
             });
+            
         }
         $(document).on('click', '.del_video', function(){
             var video_id = $(this).data('video_id');
@@ -133,28 +188,28 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         }
 
         $('#file').change(function(){
-       var error = '';
-       var files = $('#file')[0].files;
-        if(files.length > 3){
-            error += '<p>You can not select more than 3 files</p>';
-        }
-        else if(files.length == ''){
-            error += '<p>Please select at least one file</p>';
-          
-        }
-        else if(files.size > 2000000){
-            error += '<p>You can not select more than 2MB</p>';
-        }
-        if(error == ''){
-            $('#form').submit();
-        }
-        else{
-            loaddGallery();
-            $('#file').val('');
-            $('#error-gallery').html('<span class="text-danger">' + error + '</span>');
-            return false;
-        }
-    });
+            var error = '';
+            var files = $('#file')[0].files;
+            if(files.length > 3){
+                error += '<p>You can not select more than 3 files</p>';
+            }
+            else if(files.length == ''){
+                error += '<p>Please select at least one file</p>';
+            
+            }
+            else if(files.size > 2000000){
+                error += '<p>You can not select more than 2MB</p>';
+            }
+            if(error == ''){
+                $('#form').submit();
+            }
+            else{
+                loaddGallery();
+                $('#file').val('');
+                $('#error-gallery').html('<span class="text-danger">' + error + '</span>');
+                return false;
+            }
+        });
 
     $(document).on('blur', '.edit_gallery_name', function(){
         var gallery_id = $(this).data('gala_id');
@@ -809,8 +864,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                         <span>Video</span>
                     </a>
                     <ul class="sub">
-						<li><a href="{{URL::to('/video')}}">Add Video</a></li>
-					
+						<li><a href="{{URL::to('/add-video')}}">Add Video</a></li>
+                        <li><a href="{{URL::to('/video')}}">List Video</a></li>
                     </ul>
                 </li>
 
@@ -998,16 +1053,17 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </script> --}}
 <script>
     ClassicEditor
-        .create( document.querySelector( '#ck_editor1' ) )
-        .catch( error => {
-            console.error( error );
-        } );
-
+        .create( document.querySelector( '#ck_editor1' ) );
+       
         ClassicEditor
-        .create( document.querySelector( '#ck_editor2' ) )
-        .catch( error => {
-            console.error( error );
-        } );
+        .create( document.querySelector( '#ck_editor2' ) );
+       
+</script>
+
+<script type="text/javascript">
+    $('#myModal').on('hidden.bs.modal', function () {
+        callPlayer('yt-player', 'stopVideo');
+    });
 </script>
 </body>
 </html>
