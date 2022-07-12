@@ -14,6 +14,8 @@
             Session::put('message',null);   
           }
         ?>
+        <form>
+          @csrf
         <table class="table table-striped b-t b-light">
           <thead>
             <tr>
@@ -27,21 +29,22 @@
           <tbody>
             @foreach($feeship as $key => $feeships)
             <tr>
-              <td>{{($feeships->namecity)}}</td>
-              <td>{{$feeships->nameprovince}}</td>
-              <td>{{$feeships->nameward}}</td>
+              <td>{{($feeships->city->namecity)}}</td>
+              <td>{{$feeships->province->nameprovince}}</td>
+              <td>{{$feeships->ward->nameward}}</td>
               <td>{{number_format($feeships->feeship_price,0,',','.').' '.'VNĐ'}}</td>
               <td>
                 <a href="{{URL::to('/edit-delivery/'.$feeships->feeship_id)}}" class="editPro" ui-toggle-class="">
                   <i class="fa fa-pencil-square text-success text-active"></i> </a>
                   <br>
-                <a onclick="return confirm('Are you sure to delete?')" href="{{URL::to('/delete-delivery/'.$feeships->feeship_id)}}" class="delPro" ui-toggle-class="">
+                <a data-deli_id="{{$feeships->feeship_id}}" class="del_deli" ui-toggle-class="">
                   <i class="fa fa-trash text-danger text"></i></a>
               </td>
             </tr>
             @endforeach          
           </tbody>
         </table>
+      </form>
       </div>
       {{-- <footer class="panel-footer">
         <div class="row">

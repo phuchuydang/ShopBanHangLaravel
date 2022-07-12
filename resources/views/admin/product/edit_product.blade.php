@@ -48,15 +48,20 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Product Description </label>
-                            <textarea style="resize:none" rows="5" name="product_desc" class="form-control" id="exampleInputPassword1" required>{{$edit_value->product_desc}}</textarea>
+                            <textarea style="resize:none" rows="5" name="product_desc" class="form-control" id="ck_editor1" required>{{$edit_value->product_desc}}</textarea>
+                            
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Product Content</label>
-                            <textarea style="resize:none" rows="5" name="product_content" class="form-control" id="exampleInputPassword1" required>{{$edit_value->product_content}}</textarea>
+                            <textarea style="resize:none" rows="5" name="product_content" class="form-control" id="ck_editor2" required>{{$edit_value->product_content}}</textarea>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Product Price</label>
                             <input type="text" name="product_price" class="form-control" id="exampleInputEmail1" value="{{$edit_value->product_price}}"" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Product Quantity</label>
+                            <input type="text" name="product_quantity" class="form-control" id="exampleInputEmail1" value="{{$edit_value->product_quantity}}"" required>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Product Image</label>

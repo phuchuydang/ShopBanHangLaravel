@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\Login;
 use App\Models\Social;
+use App\Models\Roles;
 use Illuminate\Support\Facades\Log;
 
 use phpDocumentor\Reflection\Types\This;
@@ -50,9 +51,15 @@ class CheckoutController extends Controller
         $data['customer_address'] = $request->customer_address;
         $data['created_at'] = date('Y-m-d');
         $customer_id = DB::table('tbl_customer')->insertGetId($data);
+        //insert into role 
+        $data_role = array();
+        $data_role['email'] = $request->customer_email;
+        $data_role['role_number'] = 2;
+        $data_role['created_at'] = date('Y-m-d');
+        $role_id = DB::table('tbl_roles')->insertGetId($data_role);
         Session::put('customer_id', $customer_id);
         Session::put('customer_name', $request->customer_name);
-        return Redirect::to('/show-checkout')->with('customer_name', $request->customer_name);
+        return Redirect::to('/login-checkout')->with('customer_name', $request->customer_name);
     }
 
     public function CheckOut(){
@@ -101,6 +108,7 @@ class CheckoutController extends Controller
     {
         Session::forget('customer_id');
         Session::forget('customer_name');
+        Session::forget('customer_email');
         return Redirect::to('/login-checkout');
     }
 

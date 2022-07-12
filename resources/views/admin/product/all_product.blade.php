@@ -35,6 +35,8 @@
             Session::put('message',null);   
           }
         ?>
+        <form>
+          @csrf
         <table class="table table-striped b-t b-light">
           <thead>
             <tr>
@@ -44,6 +46,8 @@
                 </label>
               </th>
               <th>Product Name</th>
+              <th>Product Gallery</th>
+              <th>Product Quantity</th>
               <th>Price</th>
               <th>Image</th>
               <th>Category</th>
@@ -57,10 +61,12 @@
             <tr>
               <td><label class="i-checks m-b-none"><input type="checkbox" name="post[]"><i></i></label></td>
               <td>{{($pro->product_name)}}</td>
+              <td><a href="{{URL::to('/add-gallery/'.$pro->product_id)}}">Add Product Gallery</a></td>
+              <td>{{($pro->product_quantity)}}</td>
               <td>{{($pro->product_price)}}</td>
               <td><img src="public/uploads/product/{{($pro->product_image)}}" height="100" width="100"></td>
-              <td>{{($pro->category_name)}}</td>
-              <td>{{$pro->brand_name}}</td>
+              <td>{{($pro->category->category_name)}}</td>
+              <td>{{$pro->brand->brand_name}}</td>
               <td><span class="text-ellipsis">
                 <?php
                   if($pro->product_status == 1){
@@ -79,13 +85,14 @@
                 <a href="{{URL::to('/edit-product/'.$pro->product_id)}}" class="editPro" ui-toggle-class="">
                   <i class="fa fa-pencil-square text-success text-active"></i> </a>
                   <br>
-                <a onclick="return confirm('Are you sure to delete?')" href="{{URL::to('/delete-product/'.$pro->product_id)}}" class="delPro" ui-toggle-class="">
+                <a data-pro_id="{{$pro->product_id}}" class="del_pro" ui-toggle-class="">
                   <i class="fa fa-trash text-danger text"></i></a>
               </td>
             </tr>
             @endforeach          
           </tbody>
         </table>
+        </form>
       </div>
       <footer class="panel-footer">
         <div class="row">

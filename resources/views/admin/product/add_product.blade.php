@@ -48,7 +48,11 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Product Price</label>
-                            <input type="text" name="product_price" class="form-control" id="exampleInputEmail1" placeholder="Enter product price" required>
+                            <input type="number" name="product_price" class="form-control" id="exampleInputEmail1" placeholder="Enter product price" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Product Quantity</label>
+                            <input type="number" name="product_quantity" class="form-control" id="exampleInputEmail1" placeholder="Enter product quantity" required>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Product Image</label>

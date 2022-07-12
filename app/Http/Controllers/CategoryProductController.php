@@ -120,9 +120,11 @@ class CategoryProductController extends Controller
         }
     }
 
-    public function deleteCategoryProduct($category_product_id)
+    public function deleteCategoryProduct(Request $request)
     {
         $this->Authenticate();
+        $data = $request->all();
+        $category_product_id = $data['cate_id'];
         $category_product = Category::find($category_product_id);
         $category_product->delete();
         if ($category_product) {

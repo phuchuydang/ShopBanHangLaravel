@@ -99,9 +99,11 @@ class VoucherController extends Controller
         return view('admin_layout')->with('admin.voucher.all_voucher', $manager_voucher);
     }
 
-    public function deleteVoucher($voucher_id)
+    public function deleteVoucher(Request $request)
     {
         $this->Authenticate();
+        $data = $request->all();
+        $voucher_id = $data['voucher_id'];
         $voucher_info = Voucher::find($voucher_id);
         $voucher_info->delete();
         return Redirect::to('/all-voucher');

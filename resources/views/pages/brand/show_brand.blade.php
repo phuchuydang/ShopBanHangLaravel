@@ -6,31 +6,51 @@
     <h2 class="title text-center">{{$name->brand_name}}</h2>
     @endforeach
     @foreach($brand_by_id as $key => $value)
-    <div class="col-sm-4">
-        <div class="product-image-wrapper">
-            <div class="single-products">
-                    <div class="productinfo text-center">
-                        <img src="{{URL::to('public/uploads/product/'.$value->product_image)}}" alt="" />
-                        <h2>{{number_format($value->product_price).' '.'VNĐ'}}</h2>
-                        <p>{{$value->product_name}}</p>
-                        <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                    </div>
-                    {{-- <div class="product-overlay">
-                        <div class="overlay-content">
-                            <h2>{{number_format($value->product_price).' '.'VNĐ'}}</h2>
-                            <p>{{$value->product_name}}</p>
-                            <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+    <a href="{{URL::to('/product-detail/'.$value->product_id)}}">
+        <div class="col-sm-4">
+            <div class="product-image-wrapper">
+                <div class="single-products">
+                        <div class="productinfo text-center">
+                            <form>
+                                {{ csrf_field() }}
+                                <input type="hidden" class="cart_product_id_{{$value->product_id}}" value="{{$value->product_id}}">
+                                <input type="hidden" class="cart_product_name_{{$value->product_id}}" value="{{$value->product_name}}">
+                                <input type="hidden" class="cart_product_image_{{$value->product_id}}" value="{{$value->product_image}}">
+                                <input type="hidden" class="cart_product_price_{{$value->product_id}}" value="{{$value->product_price}}">
+                                <input type="hidden" class="cart_product_qty_{{$value->product_id}}" value="1">
+                                <a href="{{URL::to('/product-detail/'.$value->product_id)}}">
+                                    <img src="{{URL::to('public/uploads/product/'.$value->product_image)}}" alt="" />
+                                    <h2>{{number_format($value->product_price).' '.'VNĐ'}}</h2>
+                                    <p>{{$value->product_name}}</p>
+                                </a>
+                                {{-- <button type="button" class="btn btn-default add-to-cart" id="add-to-cart" name="add-to-cart" data-product_id={{$value->product_id}}>
+                                    <i class="fa fa-shopping-cart"></i>Add to cart
+                                </button> --}}
+                            </form>
+                            {{-- <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a> --}}
                         </div>
-                    </div> --}}
+                        <form>
+                            <a href="{{URL::to('/product-detail/'.$value->product_id)}}">
+                                <div class="product-overlay">
+                                    
+                                    <div class="overlay-content">
+                                        <img style="width:70%;height:70%;" src="{{URL::to('public/uploads/product/'.$value->product_image)}}" alt="" />
+                                        <h2>{{number_format($value->product_price).' '.'VNĐ'}}</h2>
+                                        <p>{{$value->product_name}}</p>
+                                        <a href="{{URL::to('/product-detail/'.$value->product_id)}}" class="btn btn-default add-to-cart"><i class="fa fa-info-circle" aria-hidden="true"></i>View Detail</a>
+                                    </div>
+                                </div>
+                            </a>
+                        </form>
+                </div>
+                {{-- <div class="choose">
+                    <ul class="nav nav-pills nav-justified">
+                        <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
+                        <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                    </ul>
+                </div> --}}
             </div>
-            <div class="choose">
-                <ul class="nav nav-pills nav-justified">
-                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>  
+        </div> 
     @endforeach  
 </div><!--features_items-->
 

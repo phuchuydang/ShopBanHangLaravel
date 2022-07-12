@@ -106,8 +106,9 @@
                 <tr>
                   <th> No </th>
                   <th>Product Name</th>
+                  <th>Available In Stock</th>
                   <th>Image</th>
-                  <th>Amount</th>
+                  <th>Amount Order</th>
                   <th>Price</th>
                   <th style="width:30px;">Total</th>
                   <th></th>
@@ -123,10 +124,17 @@
                     <td>{{$i}}</td>
                    
                     <td>{{$detail->product_name}}</td>
+                    <td>{{$detail->product->product_quantity}}</td>
                     <td><img src="{{asset('public/uploads/product/'.$detail->product->product_image)}}" height="100" width="100"></td>
                     <td>{{$detail->product_sales_quantity}}</td>
                     <td> {{number_format($detail->product_price,0,',','.').' '.'VNĐ'}}</td>
-                    <td>{{number_format($detail->product_price*$detail->product_sales_quantity,0,',','.').' '.'VNĐ'}}</td>
+                    <td>
+                        {{number_format($detail->product_price*$detail->product_sales_quantity,0,',','.').' '.'VNĐ'}}
+                        <input type="hidden" name="order_quantity" class="order_quantity" value="{{$detail->product_sales_quantity}}"> 
+                        
+                        <input type="hidden" name="order_quantity_id" class="order_quantity_id" value="{{$detail->product_id}}"> 
+                    </td>
+                    
                     {{-- <td>
                         <a href="" class="editPro" ui-toggle-class="">
                         <i class="fa fa-pencil-square text-success text-active"></i> </a>
@@ -135,6 +143,42 @@
                         <i class="fa fa-trash text-danger text"></i></a>
                     </td> --}}
                 </tr> 
+                <tr >
+                  <td colspan="6">
+                    @foreach($order as $orders => $ord)
+                    @if($ord->order_status == 1)
+                    <form>
+                      @csrf
+                      <select class="form-control change_status" name="change_status" >
+                        <option value="">Select Status</option>
+                        <option id="{{$ord->order_id}}" value="1">Pending</option>
+                        <option id="{{$ord->order_id}}" value="2">Delivered</option>
+                        <option id="{{$ord->order_id}}" value="3">Cancelled</option>
+                      </select>
+                    </form>
+                    @elseif($ord->order_status == 2)
+                    <form>
+                      @csrf
+                      <select class="form-control change_status" name="change_status" >
+                        <option disabled value="">Select Status</option>
+                        <option id="{{$ord->order_id}}" value="1">Pending</option>
+                        <option id="{{$ord->order_id}}" selected value="2">Delivered</option>
+                        <option id="{{$ord->order_id}}" value="3">Cancelled</option>
+                      </select>
+                    </form>
+                    @else
+                    <form>
+                      @csrf
+                      <select class="form-control change_status" name="change_status" >
+                        <option value="">Select Status</option>
+                        <option id="{{$ord->order_id}}" value="1">Pending</option>
+                        <option id="{{$ord->order_id}}" value="2">Delivered</option>
+                        <option id="{{$ord->order_id}}" selected value="3">Cancelled</option>
+                      </select>
+                    @endif
+                    @endforeach
+                  </td>
+                <tr>
                 @php
                   $i++;
                 @endphp

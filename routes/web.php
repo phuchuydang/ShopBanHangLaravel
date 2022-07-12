@@ -12,6 +12,11 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\VoucherController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\SliderController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\VideoController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -52,7 +57,7 @@ Route::get('/edit-category-product/{category_product_id}', [CategoryProductContr
 
 Route::post('/update-category-product/{category_product_id}', [CategoryProductController::class, 'updateCategoryProduct']);
 
-Route::get('/delete-category-product/{category_product_id}', [CategoryProductController::class, 'deleteCategoryProduct']);
+Route::get('/del-cate', [CategoryProductController::class, 'deleteCategoryProduct']);
 
 Route::get('/all-category-product', [CategoryProductController::class, 'allCategoryProduct']);
 
@@ -69,7 +74,7 @@ Route::get('/edit-brand-product/{brand_product_id}', [BrandProductController::cl
 
 Route::post('/update-brand-product/{brand_product_id}', [BrandProductController::class, 'updateBrandProduct']);
 
-Route::get('/delete-brand-product/{brand_product_id}', [BrandProductController::class, 'deleteBrandProduct']);
+Route::post('/del-brand', [BrandProductController::class, 'deleteBrandProduct']);
 
 Route::get('/all-brand-product', [BrandProductController::class, 'allBrandProduct']);
 
@@ -86,7 +91,7 @@ Route::get('/edit-product/{product_id}', [ProductController::class, 'editProduct
 
 Route::post('/update-product/{product_id}', [ProductController::class, 'updateProduct']);
 
-Route::get('/delete-product/{product_id}', [ProductController::class, 'deleteProduct']);
+Route::post('/del-product', [ProductController::class, 'deleteProduct']);
 
 Route::get('/all-product', [ProductController::class, 'allProduct']);
 
@@ -98,6 +103,8 @@ Route::get('/unactive-product/{product_id}', [ProductController::class, 'unactiv
 
 //Product Detail
 Route::get('/product-detail/{product_id}', [ProductController::class, 'productDetail']);
+
+
 
 //Cart
 
@@ -155,6 +162,8 @@ Route::get('/view-order/{order_code}', [OrderController::class, 'viewOrder']);
 
 Route::get('/print_order/{order_code}', [OrderController::class, 'printOrder']);
 
+Route::post('/change-quanity', [OrderController::class, 'changeQuanity']);
+
 //Send Mail
 Route::get('/send-mail', [HomeController::class, 'sendMail']);
 
@@ -177,7 +186,7 @@ Route::get('/all-voucher', [VoucherController::class, 'allVoucher']);
 
 Route::post('/save-voucher', [VoucherController::class, 'saveVoucher']);
 
-Route::get('/delete-voucher/{voucher_id}', [VoucherController::class, 'deleteVoucher']);
+Route::post('/del-voucher', [VoucherController::class, 'deleteVoucher']);
 
 Route::get('/remove-voucher', [VoucherController::class, 'removeVoucher']);
 
@@ -190,9 +199,61 @@ Route::post('/add-delivery', [DeliveryController::class, 'addDelivery']);
 
 Route::get('/list-delivery', [DeliveryController::class, 'listDelivery']);
 
-Route::get('/delete-delivery/{delivery_id}', [DeliveryController::class, 'deleteDelivery']);
+Route::post('/del-deli', [DeliveryController::class, 'deleteDelivery']);
 
 Route::get('/edit-delivery/{delivery_id}', [DeliveryController::class, 'editDelivery']);
 
 Route::post('/save-delivery', [DeliveryController::class, 'saveDelivery']);
 
+//Slider
+Route::get('/all-slider', [SliderController::class, 'allSlider']);
+
+Route::get('/add-slider', [SliderController::class, 'addSlider']);
+
+Route::post('/save-slider', [SliderController::class, 'saveSlider']);
+
+Route::post('/del-slider', [SliderController::class, 'deleteSlider']);
+
+Route::get('/edit-slider/{slider_id}', [SliderController::class, 'editSlider']);
+
+Route::post('/update-slider/{slider_id}', [SliderController::class, 'updateSlider']);
+
+Route::get('/unactive-slider/{slider_id}', [SliderController::class, 'unactiveSlider']);
+
+Route::get('/active-slider/{slider_id}', [SliderController::class, 'activeSlider']);
+
+//List user
+Route::get('/list-user', [UserController::class, 'listUser']);
+
+Route::post('/del-user', [UserController::class, 'deleteUser']);
+
+Route::get('/edit-user-role/{user_id}', [UserController::class, 'editUserRole']);
+
+//Auth
+Route::get('/register-auth', [AuthController::class, 'registerAuth']);
+
+Route::get('/login-auth', [AuthController::class, 'loginAuth']);
+
+Route::post('/register', [AuthController::class, 'register']);
+
+Route::post('/login', [AuthController::class, 'login']);
+
+//Gallery
+Route::get('/add-gallery/{product_id}', [GalleryController::class, 'addGallery']);
+
+Route::post('/load-gallery', [GalleryController::class, 'loadGallery']);
+
+Route::post('/insert-gallery/{product_id}', [GalleryController::class, 'insertGallery']);
+
+Route::post('/edit-gallery-name', [GalleryController::class, 'editGalleryName']);
+
+Route::post('/del-gallery', [GalleryController::class, 'deleteGallery']);
+
+Route::post('/update-gallery', [GalleryController::class, 'updateGallery']);
+
+//Video
+Route::get('/video', [VideoController::class, 'video']);
+
+Route::post('/load_video', [VideoController::class, 'loadVideo']);
+
+Route::post('/del-video', [VideoController::class, 'deleteVideo']);

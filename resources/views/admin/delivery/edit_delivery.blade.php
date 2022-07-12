@@ -16,8 +16,7 @@
               
               <div class="panel-body">
                   <div class="position-center">
-                    @foreach($feeship as $feeships)
-                      <form role="form" action="{{URL::to('/save-delivery/'.$feeships->feeship_id)}}" method="POST"> 
+                        <form role="form"> 
                             {{ csrf_field() }}
                             
                             <div class="form-group">
@@ -26,7 +25,7 @@
                                 <select id="city" name="city" class="form-control input-sm m-bot15  chooses city" required>
                         
                                 
-                                    <option value="{{$feeships->matp}}" selected disabled>{{$feeships->namecity}}</option>
+                                    <option value="{{$feeships->city->matp}}" selected disabled>{{$feeships->city->namecity}}</option>
                                 
                                 </select>                       
                             </div>
@@ -34,7 +33,7 @@
                             <label for="exampleInputPassword1">Province</label>
                             <select id="province" name="province" class="form-control input-sm m-bot15  province chooses" required>
                                 
-                                <option selected value="{{$feeships->maqh}}" disabled>{{$feeships->nameprovince}}</option>
+                                <option selected value="{{$feeships->province->maqh}}" disabled>{{$feeships->province->nameprovince}}</option>
 
                             
                             </select>                       
@@ -44,20 +43,20 @@
                             <select id="ward" name="ward"class="form-control input-sm m-bot15  wards" required >
                     
                         
-                                <option selected value="{{$feeships->xaid}}" disabled>{{$feeships->nameward}}</option>
+                                <option selected value="{{$feeships->ward->xaid}}" disabled>{{$feeships->ward->nameward}}</option>
                             
                             </select>                         
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Shipping Fee</label>
-                            <input type="number" value="{{$feeships->feeship_price}}" name="feeship" class="form-control feeship " id="exampleInputEmail1" placeholder="Enter feeship" required>
+                            <input type="number" data-fee_price="{{$feeships->feeship_price}}" value="{{$feeships->feeship_price}}" name="feeship" class="form-control fee_price" id="exampleInputEmail1" placeholder="Enter feeship" required>
                             <input type="text" name="id" id="id" hidden value="{{$feeships->feeship_id}}" >
                         </div>
                         
-                            <button type="submit" name="update-delivery" class="btn btn-info add_delevery">Update Delivery Fee</button>
+                            <button type="button" data-fee_id="{{$feeships->feeship_id}}" name="update-delivery" class="btn btn-info update_delevery">Update Delivery Fee</button>
                        
                   </form>
-                  @endforeach
+                
                   </div>
 
               </div>

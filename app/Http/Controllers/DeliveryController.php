@@ -80,25 +80,27 @@ class DeliveryController extends Controller
     {
         $this->Authenticate();
         $feeship = new Feeship();
-        $feeship = $feeship->getInfor();
+        $feeship = $feeship->orderBy('feeship_id', 'desc')->get();
         return view('admin.delivery.all_delivery', compact('feeship'));
     }
 
     //deleteDelivery
-    public function deleteDelivery($id)
+    public function deleteDelivery(Request $request)
     {
         $this->Authenticate();
+        $data = $request->all();
+        $id = $data['id'];
         $feeship = Feeship::find($id);
         $feeship->delete();
-        return Redirect::to('/list-delivery');
+        
     }
 
     public function editDelivery($id)
     {
         $this->Authenticate();
-        $feeship = new Feeship();
-        $feeship = $feeship->getInforWithCondition($id);
-        return view('admin.delivery.edit_delivery', compact('feeship'));
+        
+        $feeships = Feeship::findOrFail($id);
+        return view('admin.delivery.edit_delivery', compact('feeships'));
         
     }
 
@@ -106,11 +108,10 @@ class DeliveryController extends Controller
     {
         $this->Authenticate();
         $data = $request->all();
-        $id = $data['id'];
+        $id = $data['fee_id'];
         $feeship = Feeship::find($id);  
-        $feeship->feeship_price = $data['feeship'];
+        $feeship->feeship_price = $data['fee_price'];
         $feeship->updated_at = date('Y-m-d H:i:s');
         $feeship->save();
-        return Redirect::to('/list-delivery');
     }
 }

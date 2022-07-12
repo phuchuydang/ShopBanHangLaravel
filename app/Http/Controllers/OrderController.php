@@ -27,6 +27,7 @@ use App\Models\OrderDetail;
 use App\Models\Shipping;
 use App\Models\Customer;
 use App\Models\Voucher;
+use App\Models\Product;
 use Barryvdh\DomPDF\Facade\Pdf;
 session_start();
 
@@ -171,5 +172,41 @@ class OrderController extends Controller
         return $html;
 
 
+    }
+
+    public function changeQuanity(Request $request){
+        $data = $request->all();
+        $oder = Order::find($data['id']);
+        $oder->order_status = $data['status'];
+        $oder->save();
+        if($data['status'] == '2'){
+           foreach ($data['order_product_id'] as $key1 => $product_id) {
+                $product = Product::find($product_id);
+                $product_quantity = $product->product_quantity;
+                $product_sold = $product->product_sold;
+                foreach ($data['order_product_quanity'] as $key2 => $quantity) {
+                    if($key1 == $key2){
+                        $product_remain = $product_quantity - $quantity;
+                        $product->product_quantity = $product_remain;
+                        $product->product_sold += $quantity;
+                        $product->save();
+                    }
+                }
+            }
+        } else if($data['status'] == '3'){
+            foreach ($data['order_product_id'] as $key1 => $product_id) {
+                $product = Product::find($product_id);
+                $product_quantity = $product->product_quantity;
+                $product_sold = $product->product_sold;
+                foreach ($data['order_product_quanity'] as $key2 => $quantity) {
+                    if($key1 == $key2){
+                        $product_remain = $product_quantity + $quantity;
+                        $product->product_quantity = $product_remain;
+                        $product->product_sold -= $quantity;
+                        $product->save();
+                    }
+                }
+            }
+        }
     }
 }

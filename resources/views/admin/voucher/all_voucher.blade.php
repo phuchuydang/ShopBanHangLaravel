@@ -15,6 +15,8 @@
             Session::put('message',null);   
           }
         ?>
+        <form>
+          @csrf
         <table class="table table-striped b-t b-light">
           <thead>
             <tr>
@@ -41,15 +43,16 @@
                 {{-- <a href="{{URL::to('/edit-product/'.$pro->product_id)}}" class="editPro" ui-toggle-class="">
                   <i class="fa fa-pencil-square text-success text-active"></i> </a>
                   <br> --}}
-                <a onclick="return confirm('Are you sure to delete?')" href="{{URL::to('/delete-voucher/'.$pro->voucher_id)}}" class="delPro" ui-toggle-class="">
+                <a data-voucher_id="{{$pro->voucher_id}}" class="del_voucher" ui-toggle-class="">
                   <i class="fa fa-trash text-danger text"></i></a>
               </td>
             </tr>
             @endforeach          
           </tbody>
         </table>
+      </form>
       </div>
-      <footer class="panel-footer">
+      {{-- <footer class="panel-footer">
         <div class="row">
           
           <div class="col-sm-5 text-center">
@@ -66,7 +69,7 @@
             </ul>
           </div>
         </div>
-      </footer>
+      </footer> --}}
     </div>
   </div>
 @endsection

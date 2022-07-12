@@ -13,6 +13,8 @@ class Product extends Model
     //public $timestamps = false;
     protected $fillable = [
         'product_name',
+        'product_quantity',
+        'product_sold',
         'category_id',
         'brand_id',
         'product_desc',
@@ -27,17 +29,26 @@ class Product extends Model
     protected $primaryKey = 'product_id';
     protected $table = 'tbl_product';
     
-
-    public function getProductByCategoryAndBrand()
+    public function category()
     {
-        //get category name and brand name as product name
-        $product = DB::table('tbl_product')
-            ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
-            ->join('tbl_brand_product', 'tbl_product.brand_id', '=', 'tbl_brand_product.brand_id')
-            ->orderBy('product_id','asc')
-            ->get();
-        return $product;
+        return $this->belongsTo(Category::class, 'category_id');
     }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class, 'brand_id');
+    }
+
+    // public function getProductByCategoryAndBrand()
+    // {
+    //     //get category name and brand name as product name
+    //     $product = DB::table('tbl_product')
+    //         ->join('tbl_category_product', 'tbl_product.category_id', '=', 'tbl_category_product.category_id')
+    //         ->join('tbl_brand_product', 'tbl_product.brand_id', '=', 'tbl_brand_product.brand_id')
+    //         ->orderBy('product_id','asc')
+    //         ->get();
+    //     return $product;
+    // }
 
    public function saveProduct($request){
     

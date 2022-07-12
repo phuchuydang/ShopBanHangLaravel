@@ -89,20 +89,13 @@ class BrandProductController extends Controller
         }
     }
 
-    public function deleteBrandProduct($brand_product_id)
+    public function deleteBrandProduct(Request $request)
     {
         $this->Authenticate();
+        $data = $request->all();
+        $brand_product_id = $data['brand_id'];
         $brand = Brand::find($brand_product_id);
         $brand->delete();
-        if ($brand) {
-            $message = "Brand Product Deleted Successfully";
-            Session::put('message', $message);
-            return Redirect::to('/all-brand-product');
-        } else {
-            $message = "Brand Product Not Deleted Fail";
-            Session::put('message', $message);
-            return Redirect::to('/all-brand-product');
-        }
     }
 
     public function unactiveBrandProduct($brand_product_id)

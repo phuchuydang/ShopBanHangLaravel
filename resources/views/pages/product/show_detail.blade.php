@@ -1,50 +1,39 @@
 @extends('layout')
 @section('content')
-@foreach($product_detail as $key => $value)
+@foreach($product_details as $key => $value)
 <div class="product-details"><!--product-details-->
+    <style type="text/css">
+        .lSSlideOuter .lSPager.lSGallery img {
+                display: block;
+                height: 100px;
+                max-width: 100%;
+        }
+        li.lslide.active {
+            border: 2px solid #FE980F;
+        }
+    </style>
     <div class="col-sm-5">
-        <div class="view-product">
-            <img src="{{URL::to('public/uploads/product/'.$value->product_image)}}" alt="" />
-            <h3>ZOOM</h3>
-        </div>
-        <div id="similar-product" class="carousel slide" data-ride="carousel">
-            
-              <!-- Wrapper for slides -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                      <a href=""><img src="{{URL::to('public/frontend/images/similar1.jpg')}}" alt=""></a>
-                      <a href=""><img src="{{URL::to('public/frontend/images/similar2.jpg')}}" alt=""></a>
-                      <a href=""><img src="{{URL::to('public/frontend/images/similar3.jpg')}}" alt=""></a>
-                    </div>
-                    <div class="item">
-                      <a href=""><img src="{{URL::to('public/frontend/images/similar1.jpg')}}" alt=""></a>
-                      <a href=""><img src="{{URL::to('public/frontend/images/similar2.jpg')}}" alt=""></a>
-                      <a href=""><img src="{{URL::to('public/frontend/images/similar3.jpg')}}" alt=""></a>
-                    </div>
-                    <div class="item">
-                      <a href=""><img src="{{URL::to('public/frontend/images/similar1.jpg')}}" alt=""></a>
-                      <a href=""><img src="{{URL::to('public/frontend/images/similar2.jpg')}}" alt=""></a>
-                      <a href=""><img src="{{URL::to('public/frontend/images/similar3.jpg')}}" alt=""></a>
-                    </div>
-                    
-                </div>
-
-              <!-- Controls -->
-              <a class="left item-control" href="#similar-product" data-slide="prev">
-                <i class="fa fa-angle-left"></i>
-              </a>
-              <a class="right item-control" href="#similar-product" data-slide="next">
-                <i class="fa fa-angle-right"></i>
-              </a>
-        </div>
+        <ul id="imageGallery">
+            @foreach($gallery as $key => $gal)
+            <li data-thumb="{{asset('public/uploads/gallery/'.$gal->gallery_image)}}" data-src="{{asset('public/uploads/gallery/'.$gal->gallery_image)}}" class="active">
+              <img width="100%" alt="{{$gal->gallery_name}}"  src="{{asset('public/uploads/gallery/'.$gal->gallery_image)}}" />
+            </li>
+            @endforeach
+        </ul>
 
     </div>
+
     <div class="col-sm-7">
         <div class="product-information"><!--/product-information-->
             <img src="images/product-details/new.jpg" class="newarrival" alt="" />
             <form method="POST">
                 <h2>{{$value->product_name}}</h2>
                 <p>Product ID: {{$value->product_id}}</p>
+                @if($value->product_quantity > 0)
+                <h3>Available: {{$value->product_quantity}} Item</h3>
+                @else
+                <h3>Out of stock</h3>
+                @endif
                 <img src="images/product-details/rating.png" alt="" />
                     @csrf
                     <span>
@@ -63,14 +52,18 @@
                             Add to cart
                         </button> --}}
                     </span>
-                   @if(Session::has('customer_email'))
-                   <button name="add-to-cart" type="button" class="btn btn-default add-to-cart" data-id_product="{{$value->product_id}}">
-                    <i class="fa fa-shopping-cart"></i>
-                    Add to cart
-                </button>
-                   @else
-                  
-                    <h2> Please Log in to buy or add product to cart!! </h2>
+                    @if(Session::has('customer_email'))
+                        @if(($value->product_quantity > 0))
+                            <button name="add-to-cart" type="button" class="btn btn-default add-to-cart" data-id_product="{{$value->product_id}}">
+                            <i class="fa fa-shopping-cart"></i>Add to cart
+                            </button>
+                        @else
+                            <button disabled name="add-to-cart" type="button" class="btn btn-default add-to-cart" data-id_product="{{$value->product_id}}">
+                                <i class="fa fa-shopping-cart"></i>Add to cart
+                            </button>
+                        @endif
+                    @elseif(!Session::has('customer_email'))
+                        <h2> Please Log in to buy or add product to cart!! </h2>
                     @endif
             </form>
             <p><b>Availability:</b> In Stock</p>
@@ -80,6 +73,7 @@
             <a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
         </div><!--/product-information-->
     </div>
+   
 </div><!--/product-details-->
 
 
@@ -89,46 +83,16 @@
         <ul class="nav nav-tabs">
             <li  class="active"><a href="#details" data-toggle="tab">Description</a></li>
             <li><a href="#companyprofile" data-toggle="tab">Details</a></li>
-            <li><a href="#reviews" data-toggle="tab">Reviews (5)</a></li>
+            <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
         </ul>
     </div>
-    <div class="tab-content">
-        <div class="tab-pane fade active in" id="details" >
-           <p>{!!$value->product_desc!!}</p>
-        </div>
-        
-        <div class="tab-pane fade" id="companyprofile" >
-            <p>{!!$value->product_content!!}</p>
-        </div>
-        
-      
-        <div class="tab-pane fade" id="reviews" >
-            <div class="col-sm-12">
-                <ul>
-                    <li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
-                    <li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
-                    <li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
-                </ul>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-                <p><b>Write Your Review</b></p>
-                
-                <form action="#">
-                    <span>
-                        <input type="text" placeholder="Your Name"/>
-                        <input type="email" placeholder="Email Address"/>
-                    </span>
-                    <textarea name="" ></textarea>
-                    <b>Rating: </b> <img src="images/product-details/rating.png" alt="" />
-                    <button type="button" class="btn btn-default pull-right">
-                        Submit
-                    </button>
-                </form>
-            </div>
-        </div>
-        
-    </div>
+  
+    <div id="fb-root">{{$value->product_desc}}</div>
+    {{-- <div id="fb-root">{{$value->product_content}}</div> --}}
+    <div id="fb-root"></div>
+    
 </div><!--/category-tab-->
-@endforeach
+
 					
 <div class="recommended_items"><!--recommended_items-->
     <h2 class="title text-center">Relative Products</h2>
@@ -163,4 +127,5 @@
           </a>			
     </div>
 </div><!--/recommended_items-->
+@endforeach
 @endsection

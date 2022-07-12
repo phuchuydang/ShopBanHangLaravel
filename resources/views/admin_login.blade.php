@@ -47,6 +47,7 @@
                       
                     </form>
                     {{-- <p>Don't Have an Account ?<a href="registration.html">Create an account</a></p> --}}
+                    <a>Don't Have an Account ?</a> <a href="{{URL::to('/register-auth')}}">Create an account</a>
             </div>
         </div>
         <script src="{{asset('public/backend/js/bootstrap.js')}}"></script>

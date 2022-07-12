@@ -35,6 +35,8 @@
             Session::put('message',null);   
           }
         ?>
+        <form>
+          @csrf
         <table class="table table-striped b-t b-light">
           <thead>
             <tr>
@@ -74,12 +76,13 @@
                 <a href="{{URL::to('/edit-category-product/'.$cate_pro->category_id)}}" class="editPro" ui-toggle-class="">
                   <i class="fa fa-pencil-square text-success text-active"></i> </a>
                   <br>
-                <a onclick="return confirm('Are you sure to delete?')" href="{{URL::to('/delete-category-product/'.$cate_pro->category_id)}}" class="delPro" ui-toggle-class="">
+                <a data-cate_id="{{$cate_pro->category_id}}" class="del_cate" ui-toggle-class="">
                   <i class="fa fa-trash text-danger text"></i></a>
               </td>
             </tr>
             @endforeach          
           </tbody>
+        </form>
         </table>
       </div>
       <footer class="panel-footer">

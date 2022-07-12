@@ -15,6 +15,9 @@
     <link href="{{asset('public/frontend/css/animate.css')}}" rel="stylesheet">
 	<link href="{{asset('public/frontend/css/main.css')}}" rel="stylesheet">
 	<link href="{{asset('public/frontend/css/responsive.css')}}" rel="stylesheet">
+	<link href="{{asset('public/frontend/css/lightslider.css')}}" rel="stylesheet">
+	<link href="{{asset('public/frontend/css/lightgallery.min.css')}}" rel="stylesheet">
+	<link href="{{asset('public/frontend/css/prettify.css')}}" rel="stylesheet">
 	{{-- <link href="{{asset('public/frontend/css/style.css')}}" rel="stylesheet"> --}}
     <!--[if lt IE 9]>
    
@@ -22,11 +25,31 @@
     <![endif]-->   
 	<script src="{{URL::to('public/frontend/js/html5shiv.js')}}"></script> 
 	<script src="{{URL::to('https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js')}}"></script>   
+	<script src="{{URL::to('https://cdn.ckeditor.com/ckeditor5/23.0.0/classic/ckeditor.js')}}"></script>
+
     <link rel="shortcut icon" href="{{('public/frontend/images/ico/favicon.ico')}}">
     <link rel="apple-touch-icon-precomposed" sizes="144x144" href="images/ico/apple-touch-icon-144-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="images/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="images/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="images/ico/apple-touch-icon-57-precomposed.png">
+	<script type="text/javascript">
+		$(document).ready(function() {
+		$('#imageGallery').lightSlider({
+			gallery:true,
+			item:1,
+			loop:true,
+			thumbItem:3,
+			slideMargin:0,
+			enableDrag: false,
+			currentPagerPosition:'left',
+			onSliderLoad: function(el) {
+				el.lightGallery({
+					selector: '#imageGallery .lslide'
+				});
+			}   
+		});  
+	});
+  </script>
 </head><!--/head-->
 
 <body>
@@ -196,47 +219,29 @@
 							<li data-target="#slider-carousel" data-slide-to="2"></li>
 						</ol>
 						
-						<div class="carousel-inner">
-							<div class="item active">
-								<div class="col-sm-6">
-									<h1><span>E</span>-SHOPPER</h1>
-									<h2>Free E-Commerce Template</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+						{{-- <div class="carousel-inner">
+							@php
+								$i = 0;
+							@endphp
+							@foreach($slider as $v_slider => $slider_value)
+							@php
+								$i++;
+							@endphp
+							<div class="item {{$i == 1 ? 'active' : ''}}"> --}}
+								{{-- <div class="col-sm-6">
+									
+									<h2>{{$slider_value->slider_name}}</h2>
+									<p>{{$slider_value->slider_desc}} </p>
 									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="{{URL::to('public/frontend/images/girl1.jpg')}}" class="girl img-responsive" alt="" />
-									<img src="{{URL::to('public/frontend/images/pricing.png')}}"  class="pricing" alt="" />
+								</div> --}}
+								{{-- <div class="col-sm-6">
+									<img alt="{{$slider_value->slider_desc}}" src="{{asset('public/uploads/slider/'.$slider_value->slider_image)}}" class="img img-responsive" alt="" />
+									
 								</div>
 							</div>
-							<div class="item">
-								<div class="col-sm-6">
-									<h1><span>E</span>-SHOPPER</h1>
-									<h2>100% Responsive Design</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="{{URL::to('public/frontend/images/girl2.jpg')}}" class="girl img-responsive" alt="" />
-									<img src="{{URL::to('public/frontend/images/pricing.png')}}"  class="pricing" alt="" />
-								</div>
-							</div>
-							
-							<div class="item">
-								<div class="col-sm-6">
-									<h1><span>E</span>-SHOPPER</h1>
-									<h2>Free Ecommerce Template</h2>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. </p>
-									<button type="button" class="btn btn-default get">Get it now</button>
-								</div>
-								<div class="col-sm-6">
-									<img src="{{URL::to('public/frontend/images/girl3.jpg')}}" class="girl img-responsive" alt="" />
-									<img src="{{URL::to('public/frontend/images/pricing.png')}}" class="pricing" alt="" />
-								</div>
-							</div>
-							
-						</div>
-						
+							@endforeach
+						</div> --}}
+					
 						<a href="#slider-carousel" class="left control-carousel hidden-xs" data-slide="prev">
 							<i class="fa fa-angle-left"></i>
 						</a>
@@ -262,6 +267,17 @@
 							<div class="panel panel-default">
 								<div class="panel-heading">
 									<h4 class="panel-title"><a href="{{URL::to('/category-product-home/'.$category->category_id)}}">{{$category->category_name}}</a></h4>
+								</div>
+							</div>
+							<div id="{{URL::to('/category-product-home/'.$category->category_id)}}" class="panel-collapse collapse">
+								<div class="panel-body">
+									<ul>
+										<li><a href="#">Nike </a></li>
+										<li><a href="#">Under Armour </a></li>
+										<li><a href="#">Adidas </a></li>
+										<li><a href="#">Puma</a></li>
+										<li><a href="#">ASICS </a></li>
+									</ul>
 								</div>
 							</div>
 						@endforeach
@@ -467,8 +483,12 @@
     <script src="{{asset('public/frontend/js/jquery.prettyPhoto.js')}}"></script>
     <script src="{{asset('public/frontend/js/main.js')}}"></script>
 	{{-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> --}}
+	<script src="{{asset('public/frontend/js/lightgallery-all.min.js')}}"></script>
+	<script src="{{asset('public/frontend/js/lightslider.js')}}"></script>
+	<script src="{{asset('public/frontend/js/prettify.js')}}"></script>
 	{{-- <script src="{{asset('public/frontend/js/sweetalert.js')}}"></script> --}}
 	<script src="{{asset('https://unpkg.com/sweetalert/dist/sweetalert.min.js')}}"></script>
+	
 	<script type="text/javascript">
 			$(document).ready(function(){
 			$('.send_order').click(function(){

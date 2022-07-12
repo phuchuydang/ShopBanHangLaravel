@@ -11,8 +11,10 @@ use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Session;
-use App\Models\Login;
+use App\Models\Admin;
 use App\Models\Social;
+use App\Models\Customer;
+use App\Models\Roles;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Redirect;
 use phpDocumentor\Reflection\Types\This;
@@ -53,12 +55,12 @@ class AdminController extends Controller
 
         $admin_email = $data['admin_email'];
         $admin_password = md5($data['admin_password']);
-        $login = Login::where('email', $admin_email)->where('password', $admin_password)->first();
+        $login = Admin::where('email', $admin_email)->where('password', $admin_password)->first();
         // echo '<pre>';
         // print_r($login);
         // echo '</pre>';
         //login count
-        $login_count = Login::where('email', $admin_email)->where('password', $admin_password)->count();
+        $login_count = Admin::where('email', $admin_email)->where('password', $admin_password)->count();
         if ($login_count) {
             Session::put('name', $login->name);
             //admin_id
@@ -126,9 +128,9 @@ class AdminController extends Controller
                 'user' => $user->name,
             ]);
 
-            $orang = Login::where('email', $user->email)->first();
+            $orang = Admin::where('email', $user->email)->first();
             if(!$orang){
-                $orang = Login::create([
+                $orang = Admin::create([
                     'name' => $user->name,
                     'email' => $user->email,
                     'password' => '',
@@ -150,7 +152,7 @@ class AdminController extends Controller
         $users = Socialite::driver('google')->user();
         $authUser = $this->findOrCreateUser($users,'Google');
         //echo '<pre>';print_r($authUser);echo '</pre>';
-        $account_name = Login::where('id', $authUser->user_id)->first();
+        $account_name = Admin::where('id', $authUser->user_id)->first();
         Session::put('name', $account_name->name);
         return Redirect::to('dashboard')->with('message', 'Welcome '.$account_name->name);
         // echo '<pre>';
@@ -158,6 +160,6 @@ class AdminController extends Controller
         // echo '</pre>';
     }
 
-
+   
 
 }
