@@ -135,7 +135,7 @@
 								?>
 								<li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-crosshairs"></i> Checkout</a></li>
 								<?php } ?>
-								<li><a href="{{URL::to('/show-cart')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								<li><a href="{{URL::to('/show-carts')}}"><i class="fa fa-shopping-cart"></i> Cart</a></li>
 								<?php 
 									$customer_id=Session::get('customer_id'); 
 									if($customer_id!=NULL){
@@ -182,7 +182,7 @@
 								<li><a href="{{URL::to('/home')}}" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
+                                        <li><a href="#">Products</a></li>
                                     </ul>
                                 </li> 
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
@@ -191,16 +191,17 @@
 										<li><a href="blog-single.html">Blog Single</a></li>
                                     </ul> --}}
                                 </li> 
-								<li><a href="{{URL::to('/show-cart')}}">Cart</a></li>
-								<li><a href="contact-us.html">Contact</a></li>
+								<li><a href="{{URL::to('/show-carts')}}">Cart</a></li>
+								<li><a href="{{URL::to('/contact')}}">Contact</a></li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-sm-4">
-						<form action="{{URL::to('/search')}}" method="POST" >
+						<form action="{{URL::to('/search')}}" autocomplete="off" method="POST" >
 							{{csrf_field()}}
 							<div class="search_box pull-right">
-								<input type="text" name = "keyword" placeholder="Search"/>
+								<input type="text" id="keyword" name = "keyword" placeholder="Search"/>
+								<div id="search-ajax"></div>
 								<button type="submit" style="margin-top: 0px;" class="btn btn-default get">Search</button>
 								
 							</div>
@@ -651,6 +652,52 @@
 			});
 
 	</script>
+
+<script type="text/javascript">
+	$('#keyword').keyup(function(){
+		var query = $(this).val();
+		if(query != '')
+		{
+			var _token = $('input[name="_token"]').val();
+			$.ajax({
+				url:"{{ url('/search-autocomplete') }}",
+				method:"POST",
+				data:{query:query, _token:_token},
+				success:function(data){
+					$('#search-ajax').fadeIn();
+					$('#search-ajax').html(data);
+				}
+			});
+		}
+	});
+
+	$(document).on('click', '.li-autocomplete', function(){
+		$('#keyword').val($(this).text());
+		$('#search-ajax').fadeOut();
+	});
+</script>
+
+<script type="text/javascript">
+	$('.quickview').click(function(){
+		var product_id = $(this).data('product_id');
+		var _token = $('input[name="_token"]').val();
+		$.ajax({
+			url:"{{ url('/quickview') }}",
+			method:"POST",
+			dataType:"json",
+			data:{product_id:product_id, _token:_token},
+			success:function(data){
+				$('#product-quickview-title').html(data.product_name);
+				$('#product-quickview-id').html(data.product_id);
+				$('#product-quickview-price').html(data.product_price);
+				$('#product-quickview-image').attr('src', data.product_image);
+				$('#product-quickview-desc').html(data.product_desc);
+				$('#product-quickview-content').html(data.product_content);
+				$('#product-quickview-tag').html(data.product_tag);
+			}
+		});
+	});
+</script>
 
 {{-- <script type="text/javascript">
 	$(document).ready(function(){

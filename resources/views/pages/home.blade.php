@@ -21,10 +21,75 @@
                                 <h2>{{number_format($value->product_price).' '.'VNĐ'}}</h2>
                                 <p>{{$value->product_name}}</p>
                             </a>
-                            {{-- <button type="button" class="btn btn-default add-to-cart" id="add-to-cart" name="add-to-cart" data-product_id={{$value->product_id}}>
-                                <i class="fa fa-shopping-cart"></i>Add to cart
-                            </button> --}}
+                            {{-- <button data-product_id="{{$value->product_id}}"  type="button" class="btn btn-primary quickview" data-toggle="modal" data-target="#quickView">
+                                Quick view
+                            </button>
+
+                            <div class="modal fade" id="quickView" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="model-title product_quickview_title">
+                                        <span id="product_quickview_title"></span>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <span id="product_quickview_image"></span>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <span id="product_quickview_id"></span>
+                                                <span id="product_quickview_price"></span>
+                                                <span id="product_quickview_desc"></span>
+                                                <span id="product_quickview_content"></span>
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            --}}
                         </form>
+                        <div class="choose">
+                            <style>
+                                ul.nav.nav-pills.nav-justified li {
+                                    text-align: center;
+                                    font-size: 20px;
+                                }
+                                .button_wishlist{
+                                    background-color: #ffff;
+                                    color: #B3AFA8;
+                                    border: none;
+                                    
+                                }
+                                ul.nav.nav-pills.nav-justified i {
+                                    color: #B3AFA8;
+                                }
+                                /* .button_wishlist span:hover{
+                                    color: #fe980f;
+                                } */
+                                /* .button_wishlist:focus {
+                                    outline: none;
+                                    border: none;
+                                } */
+                            </style>
+                            <ul class="nav nav-pills nav-justified">
+                                <li>
+                                    <button class="button_wishlist" id="{{$value->product_id}}" 
+                                        onclick="add_wishlist(this.id);"><span>Add to Wishlist</span></button>
+                                </li>
+                                {{-- <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li> --}}
+                            </ul>
+                        </div>
+                        
                         {{-- <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a> --}}
                     </div>
                     <form>
@@ -43,8 +108,9 @@
             </div>
             {{-- <div class="choose">
                 <ul class="nav nav-pills nav-justified">
-                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to wishlist</a></li>
-                    <li><a href="#"><i class="fa fa-plus-square"></i>Add to compare</a></li>
+                    <li><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                        Launch demo modal
+                      </button></li>
                 </ul>
             </div> --}}
         </div>
@@ -52,135 +118,35 @@
 </a>
     @endforeach  
 </div><!--features_items-->
-{{-- <ul class="pagination pagination-sm m-t-none m-b-none">
-    {{$all_product->links()}}
- </ul> --}}
+<script type="text/javascript">
+    function add_wishlist(clicked_id){
+        var id = clicked_id;
+        // var name = document.getElementById("wishlist_productname"+id).value;
+        // var image = document.getElementById("wishlist_productimage"+id).src;
+        // var price = document.getElementById("wishlist_productprice"+id).value;
+        // var url = document.getElementById("wishlist_producturl"+id).href;
+        // var newItem = {
+        //     id: id,
+        //     name: name,
+        //     image: image,
+        //     price: price,
+        //     url: url
+        // };
+        // var old_data = JSON.parse(localStorage.getItem("data"));
+        // if(localStorage.getItem("data") == null){
+        //     localStorage.setItem("data", []);
+        // } 
+        // var matches = $.grep(old_data, function(e){ return e.id == id; });
+        // if(matches.length == 0){
+        //    old_data.push(newItem);
+        //    $('#row_wishlist').append('<div class="row" style="margin:10px 0"><div class="col-md-4"><img src="'+image+'" style="width:100px;height:100px;"></div><div class="col-md-8"><a href="'+url+'">'+name+'</a><br><span>'+price+'</span></div></div>');
+          
+        // } else {
+        //     swal ( "Error" ,  "Product has already been added to wishlist" ,  "error" );
+        // }
 
-{{-- <div class="category-tab"><!--category-tab-->
-    <div class="col-sm-12">
-        <ul class="nav nav-tabs">
-            <li class="active"><a href="#tshirt" data-toggle="tab">T-Shirt</a></li>
-            
-        </ul>
-    </div>
-    <div class="tab-content">
-        <div class="tab-pane fade active in" id="tshirt" >
-            <div class="col-sm-3">
-                <div class="product-image-wrapper">
-                    <div class="single-products">
-                        <div class="productinfo text-center">
-                            <img src="{{('public/frontend/images/gallery1.jpg')}}" alt="" />
-                            <h2>$56</h2>
-                            <p>Easy Polo Black Edition</p>
-                            <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div><!--/category-tab--> --}}
-
-				
-					
-{{-- 					
-<div class="recommended_items"><!--recommended_items-->
-    <h2 class="title text-center">Recommended items</h2>
-    
-    <div id="recommended-item-carousel" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-            <div class="item active">	
-                <div class="col-sm-4">
-                    <div class="product-image-wrapper">
-                        <div class="single-products">
-                            <div class="productinfo text-center">
-                                <img src="{{('public/frontend/images/recommend1.jpg')}}" alt="" />
-                                <h2>$56</h2>
-                                <p>Easy Polo Black Edition</p>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="product-image-wrapper">
-                        <div class="single-products">
-                            <div class="productinfo text-center">
-                                <img src="{{('public/frontend/images/recommend2.jpg')}}" alt="" />
-                                <h2>$56</h2>
-                                <p>Easy Polo Black Edition</p>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="product-image-wrapper">
-                        <div class="single-products">
-                            <div class="productinfo text-center">
-                                <img src="{{('public/frontend/images/recommend3.jpg')}}" alt="" />
-                                <h2>$56</h2>
-                                <p>Easy Polo Black Edition</p>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="item">	
-                <div class="col-sm-4">
-                    <div class="product-image-wrapper">
-                        <div class="single-products">
-                            <div class="productinfo text-center">
-                                <img src="{{('public/frontend/images/recommend1.jpg')}}" alt="" />
-                                <h2>$56</h2>
-                                <p>Easy Polo Black Edition</p>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="product-image-wrapper">
-                        <div class="single-products">
-                            <div class="productinfo text-center">
-                                <img src="{{('public/frontend/images/recommend2.jpg')}}" alt="" />
-                                <h2>$56</h2>
-                                <p>Easy Polo Black Edition</p>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="product-image-wrapper">
-                        <div class="single-products">
-                            <div class="productinfo text-center">
-                                <img src="{{('public/frontend/images/recommend3.jpg')}}" alt="" />
-                                <h2>$56</h2>
-                                <p>Easy Polo Black Edition</p>
-                                <a href="#" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</a>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-         <a class="left recommended-item-control" href="#recommended-item-carousel" data-slide="prev">
-            <i class="fa fa-angle-left"></i>
-          </a>
-          <a class="right recommended-item-control" href="#recommended-item-carousel" data-slide="next">
-            <i class="fa fa-angle-right"></i>
-          </a>			
-    </div>
-</div> --}}
-
+        // localStorage.setItem("data", JSON.stringify(old_data));
+    }
+</script>
 @endsection
 

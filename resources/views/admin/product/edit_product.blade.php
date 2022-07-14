@@ -47,6 +47,10 @@
                             </select>                       
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Product Tag</label>
+                            <input type="text" data-role="tagsinput" name="product_tag" value="{{$edit_value->product_tag}}" class="form-control" required>
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputPassword1">Product Description </label>
                             <textarea style="resize:none" rows="5" name="product_desc" class="form-control" id="ck_editor1" required>{{$edit_value->product_desc}}</textarea>
                             

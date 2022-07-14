@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -46,4 +47,24 @@ class HomeController extends Controller
     //     });
     //     return redirect('/')->with('message','');
     // }
+
+    public function searchAutocomplete(Request $request)
+    {
+        $data = $request->all();
+        if($data['query']){
+            $output = "";
+            $products = Product::where('product_status',1)->where('product_name', 'like', '%'.$data['query'].'%')->get();
+            $output .= '<ul class="dropdown-menu" style="display:block; position:relative">';
+            if($products){
+                foreach($products as $product){
+                    $output .= '<li class="li-autocomplete"><a href="">'.$product->product_name.'</a></li>';
+                    
+                }
+            } else {
+                $output .= '<li><a>No result found</a></li>';
+            }
+            $output .= '</ul>';
+            echo $output;
+        }
+    }
 }

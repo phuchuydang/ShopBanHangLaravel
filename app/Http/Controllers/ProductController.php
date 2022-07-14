@@ -51,6 +51,7 @@ class ProductController extends Controller
         $data['product_quantity'] = $request->product_quantity;
         $data['product_sold'] = 0;
         $data['product_price'] = $request->product_price;
+        $data['product_tag'] = $request->product_tag;
         $data['product_desc'] = $request->product_desc;
         $data['product_content'] = $request->product_content;
         $data['product_status'] = $request->product_status;
@@ -178,9 +179,19 @@ class ProductController extends Controller
         
         
         foreach($product_detail as $key => $value){
-            $category_id = $value->category_id;
+            
             $product_id = $value->product_id;
+           
+           
+           
             $brand_id = $value->brand_id;
+        }
+
+        foreach($product_details as $key => $value){
+            $product_cate_name = $value->category_name;
+            $product_brand_name = $value->brand_name;
+            $product_name = $value->product_name;
+            $category_id = $value->category_id;
         }
         //get category_id from
         $category_id = Product::where('product_id', $product_id)->first();
@@ -198,6 +209,38 @@ class ProductController extends Controller
         ->with('product_detail', $product_detail)
         ->with('relative_product', $relative_product)
         ->with('product_details', $product_details)
+        ->with('product_cate_name', $product_cate_name)
+        ->with('product_brand_name', $product_brand_name)
+        ->with('product_name', $product_name)
+        ->with('category_id', $category_id)
         ->with('slider', $slider);
+    }
+
+    public function getTag(Request $requets,$product_tag)
+    {
+        $slider = DB::table('tbl_sliders')->orderByDesc('slider_id')->take(4)->get();
+        $cate_product = DB::table('tbl_category_product')->where('category_status', 1)->get();
+        $brand_product = DB::table('tbl_brand_product')->where('brand_status', 1)->get();
+        $tag = str_replace('-', ' ', $product_tag);
+        $relative_product = Product::where('product_status', 1)->where('product_name' , 'like', '%'.$product_tag.'%')->orWhere('product_tag', 'like', '%'.$product_tag.'%')->get();
+        return view('pages.product.tag')
+        ->with('cate_product', $cate_product)->with('brand_product', $brand_product)
+        ->with('slider', $slider)->with('product_tag', $product_tag)->with('relative_product', $relative_product);
+      
+    }
+
+    public function quickView(Request $request){
+        $data = $request->all();
+        $product_id = $data['product_id'];
+        $product = Product::find($product_id);
+        $output['product_name'] = $product->product_name;
+        $output['product_id'] = $product->product_id;
+        $output['product_price'] = number_format($product->product_price,0,',','.').' VNĐ';
+        $output['product_desc'] = $product->product_desc;
+        $output['product_content'] = $product->product_content;
+        $output['product_image'] = '<p><img src="'.asset('public/uploads/product/'.$product->product_image).'" alt="'.$product->product_name.'" class="img-fluid"></p>';
+        $output['product_tag'] = $product->product_tag;
+        echo json_encode($output);
+
     }
 }

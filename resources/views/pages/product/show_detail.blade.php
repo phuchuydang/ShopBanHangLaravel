@@ -12,6 +12,14 @@
             border: 2px solid #FE980F;
         }
     </style>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{URL::to('/')}}">Home</a></li>
+          <li class="breadcrumb-item"><a >{{$product_cate_name}}</a></li>
+          <li class="breadcrumb-item"><a >{{$product_brand_name}}</a></li>
+          <li class="breadcrumb-item active" aria-current="page">{{$product_name}}</li>
+        </ol>
+      </nav>
     <div class="col-sm-5">
         <ul id="imageGallery">
             @foreach($gallery as $key => $gal)
@@ -52,6 +60,21 @@
                             Add to cart
                         </button> --}}
                     </span>
+                    <style type="text/css">
+                        a.tags_style {
+                            background-color: #FE980F;
+                            color: #fff;
+                            padding: 5px;
+                            margin: 5px;
+                            border-radius: 5px;
+                            font-size: 12px;
+                            font-weight: bold;
+                        }
+                        a.tags_style:hover {
+                            background-color: #fff;
+                            color: #FE980F;
+                        }
+                    </style>
                     @if(Session::has('customer_email'))
                         @if(($value->product_quantity > 0))
                             <button name="add-to-cart" type="button" class="btn btn-default add-to-cart" data-id_product="{{$value->product_id}}">
@@ -71,6 +94,15 @@
             <p><b>Brand:</b> {{$value->brand_name}}</p>
             <p><b>Category:</b> {{$value->category_name}}</p>
             <a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
+            <fieldset>
+                <legend>Tags</legend>
+                <p><i class="fa fa-tag"></i>
+                    @php $tags = explode(',',$value->product_tag); @endphp
+                    @foreach($tags as $tag)
+                    <a class="tag_style" href="{{url('/tag/'.Str::slug($tag))}}">{{$tag}}</a>
+                    @endforeach
+                </p>
+            </fieldset>
         </div><!--/product-information-->
     </div>
    
@@ -81,18 +113,98 @@
 <div class="category-tab shop-details-tab"><!--category-tab-->
     <div class="col-sm-12">
         <ul class="nav nav-tabs">
-            <li  class="active"><a href="#details" data-toggle="tab">Description</a></li>
+            <li ><a href="#details" data-toggle="tab">Description</a></li>
             <li><a href="#companyprofile" data-toggle="tab">Details</a></li>
-            <li><a href="#reviews" data-toggle="tab">Reviews</a></li>
+            <li  class="active"><a href="#reviews" data-toggle="tab">Reviews</a></li>
         </ul>
     </div>
   
-    <div id="fb-root">{{$value->product_desc}}</div>
-    {{-- <div id="fb-root">{{$value->product_content}}</div> --}}
     <div id="fb-root"></div>
+    <div id="fb-root"></div>
+    <div id="fb-root">
+        <div class="tab-pane fade active in" id="reviews" >
+            <div class="col-sm-12">
+                {{-- <ul>
+                    <li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
+                    <li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
+                    <li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+                </ul> --}}
+                <style type="text/css">
+                    .style_comment {
+                        border: 1px solid #ddd;
+                        border-radius: 10px;
+                        background : #f0f0e9;
+                    }
+                </style>
+                <form>
+                    @csrf
+                    <input type="hidden" value="{{$value->product_id}}" name="product_id_comment" class="product_id_comment">
+                    <div id="comment-show"> </div>
+                
+                </form>
+                
+                <p><b>Write Your Review</b></p>
+                
+                <form>
+                    @csrf
+                    <span>
+                        <input type="text" name="comment_name" type="text" placeholder="Your Name" required/>
+                        <input type="email" name="comment_email" type="email" placeholder="Email Address" required/>
+                    </span>
+                    <textarea name="comment-content" class="comment_content"placeholder="Write your comment" required ></textarea>
+                    {{-- <b>Rating: </b> <img src="{{asset('public/frontend/images/rating.png')}}" alt="" /> --}}
+                    <button data-product_id="{{$value->product_id}}" type="button" class="btn btn-default send_comment pull-right">
+                        Submit
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
     
 </div><!--/category-tab-->
+<script type="text/javascript">
+	$(document).ready(function(){
+		loadComment();
+		function loadComment(){
+			var product_id = $('.product_id_comment').val();
+			var _token = $('input[name="_token"]').val();
+			//alert(product_id);
+			$.ajax({
+				url:"{{url('/load-comment')}}",
+				method:"POST",
+				data:{product_id:product_id, _token:_token},
+				success:function(data){
+					$('#comment-show').html(data);
+				}
+			});
+		}
 
+        $('.send_comment').click(function(){
+            var product_id = $(this).data('product_id');
+            var comment_name = $('input[name="comment_name"]').val();
+            var comment_email = $('input[name="comment_email"]').val();
+            var comment_content = $('textarea[name="comment-content"]').val();
+            var _token = $('input[name="_token"]').val();
+            alert(product_id + "\n" + comment_name + "\n" + comment_email + "\n" + comment_content + "\n" + _token);
+            $.ajax({
+                url:"{{url('/send-comment')}}",
+                method:"POST",
+                data:{product_id:product_id, comment_name:comment_name, comment_email:comment_email, comment_content:comment_content, _token:_token},
+                success:function(data){
+                  
+                        swal ( "Success" ,  "Comment send successfully" ,  "success" );
+                        loadComment();
+                        //set null value for input
+                        $('input[name="comment_name"]').val('');
+                        $('input[name="comment_email"]').val('');
+                        $('textarea[name="comment-content"]').val('');
+                  
+                }
+            });
+        });
+	});
+
+</script>
 					
 <div class="recommended_items"><!--recommended_items-->
     <h2 class="title text-center">Relative Products</h2>

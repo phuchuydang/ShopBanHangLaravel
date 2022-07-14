@@ -17,9 +17,12 @@
         ?>
         <form>
           @csrf
-        <table class="table table-striped b-t b-light">
+        <table id="myTables" class="table table-striped b-t b-light">
           <thead>
             <tr>
+              <th style="width:20px;">
+                No
+              </th>
               <th>Name</th>
               <th>Email</th>
               <th>Phone</th>
@@ -29,9 +32,13 @@
             </tr>
           </thead>
           <tbody>
+            @php
+              $i = 1;
+            @endphp
             @foreach($user as $key => $user)
            
             <tr>
+              <td>{{$i}}</td>
               <td>{{($user->customer_name)}}</td>
               <td>{{($user->customer_email)}}</td>
               <td><span class="text-ellipsis">{{$user->customer_phone}}</span></td>
@@ -44,6 +51,9 @@
                   <i class="fa fa-trash text-danger text"></i></a>
               </td>
             </tr>
+            @php
+              $i++;
+            @endphp
          
             @endforeach          
           </tbody>

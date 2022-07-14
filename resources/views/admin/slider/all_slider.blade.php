@@ -17,7 +17,7 @@
         ?>
         <form>
           @csrf
-        <table class="table table-striped b-t b-light">
+        <table id="myTables" class="table table-striped b-t b-light">
           <thead>
             <tr>
               <th>Slider Name</th>

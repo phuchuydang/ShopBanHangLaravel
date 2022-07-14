@@ -49,7 +49,7 @@ class VideoController extends Controller
         });
         $output = '<form enctype="multipart/form-data">
         '.csrf_field().'
-        <table class="table table-bordered table-hover">
+        <table id="myTables" class="table table-bordered table-hover">
             <thead>
                 <tr>
                     <th>No</th>

@@ -39,6 +39,10 @@
                             </select>                       
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Product Tag</label>
+                            <input type="text" data-role="tagsinput" name="product_tag" class="form-control" required>
+                        </div>
+                        <div class="form-group">
                             <label for="ckeditor1">Product Description </label>
                             <textarea style="resize:none" rows="5" name="product_desc" class="form-control" id="ckeditor1" required></textarea>
                         </div>

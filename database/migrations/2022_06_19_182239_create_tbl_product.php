@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('product_sold');
             $table->integer('category_id');
             $table->integer('brand_id');
+            $table->text('product_tag');
             $table->text('product_desc');
             $table->text('product_content');
             $table->string('product_price');

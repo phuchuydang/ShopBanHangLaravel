@@ -14,6 +14,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- //bootstrap-css -->
 <!-- Custom CSS -->
 <link href="{{asset('public/backend/css/style.css')}}" rel='stylesheet' type='text/css' />
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
+<link href="{{asset('public/backend/css/bootstrap-tagsinput.css')}}" rel='stylesheet' type='text/css' />
 <link href="{{asset('public/backend/css/style-responsive.css')}}" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" integrity="sha512-9usAa10IRO0HhonpyAIVpjrylPvoDwiPUiKdWk5t3PyolY1cOd4DSE0Ga+ri4AuTroPR5aQvXU9xC6qOPnzFeg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <!-- font CSS -->
@@ -27,6 +29,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- //calendar -->
 <!-- //font-awesome icons -->
 <script src="{{asset('public/backend/js/jquery2.0.3.min.js')}}"></script>
+<script src="{{asset('public/backend/js/bootstrap-tagsinput.min.js')}}"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.js"></script>
 <script src="{{asset('public/backend/js/raphael-min.js')}}"></script>
 <script src="{{asset('public/backend/js/morris.js')}}"></script>
 <script src="{{URL::to('https://cdn.ckeditor.com/4.19.0/standard/ckeditor.js')}}"></script>
@@ -733,6 +737,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         });
     });
 </script>
+<script type="text/javascript">
+    $(document).ready( function () {
+        $('#myTables').DataTable();
+    } );
+</script>
 </head>
 <body>
 <section id="container">
@@ -789,11 +798,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         <div class="leftside-navigation">
             <ul class="sidebar-menu" id="nav-accordion">
                 <li>
-                    <a class="active" href="{{URL::to('/dashboard')}}">
+                    <a  href="{{URL::to('/dashboard')}}">
                         <i class="fa fa-dashboard"></i>
                         <span>Dashboard</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{URL::to('/add-contact')}}">
+                        <i class="fa-solid fa-address-book"></i>
+                        <span>Contact</span>
+                    </a>
+                </li>
+               
                 <li>
                     <a href="{{URL::to('/list-user')}}">
                         <i class="fa fa-user" aria-hidden="true"></i>
@@ -883,6 +899,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
                 <li class="sub-menu">
                     <a >
+                        <i class="fa fa-comment" aria-hidden="true"></i>
+                        <span>Comment</span>
+                    </a>
+                    <ul class="sub">
+						<li><a href="{{URL::to('/list-comment')}}">List Comment</a></li>
+                     
+                    </ul>
+                </li>
+                
+
+                <li class="sub-menu">
+                    <a >
                         <i class='fa-solid fa-truck-fast'></i>
                         <span>Delivery</span>
                     </a>
@@ -892,7 +920,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                      
                     </ul>
                 </li>
-                
+
+              
             </ul>            
 		</div>
         <!-- sidebar menu end-->
@@ -1063,6 +1092,109 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script type="text/javascript">
     $('#myModal').on('hidden.bs.modal', function () {
         callPlayer('yt-player', 'stopVideo');
+    });
+</script>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        var comment_id = $(this).attr('data-comment_id');
+
+        $('.reply-comment').click(function(){
+            var comment_id = $(this).attr('data-comment_id');
+            var reply_comment = $('.reply_comment-'+comment_id).val();
+            var comment_product_id = $('input[name="comment_product_id"]').val();
+            //alert(comment_product_id + "\n" + comment_id + "\n" + reply_comment);
+            $.ajax({
+                url:'{{url('/reply-comment')}}',
+                method : 'POST',
+                data: {
+                    comment_id: comment_id,
+                    reply_comment: reply_comment,
+                    comment_product_id: comment_product_id,
+                    _token: '{{csrf_token()}}'
+                },
+                success: function(data) {
+                    swal("Success!", "Reply Comment Success!", "success");
+                    $('.reply_comment').val('');
+                    location.reload();
+                }
+            });
+        });
+
+
+        $('.hide_comment').click(function(){
+            var comment_id = $(this).attr('data-comment_id');
+            var _token = $('input[name="_token"]').val();
+            $.ajax({
+                url: '{{URL::to('/hide-comment')}}',
+                type: 'POST',
+                data: {comment_id:comment_id, _token:_token},
+                success: function(data){
+                    swal("Good job!", "Hide comment success", "success");
+                    setTimeout(function(){
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+        $('.display_comment').click(function(){
+            var comment_id = $(this).attr('data-comment_id');
+            var _token = $('input[name="_token"]').val();
+        
+            $.ajax({
+                url: '{{URL::to('/display-comment')}}',
+                type: 'POST',
+                data: {comment_id:comment_id, _token:_token},
+                success: function(data){
+                    swal("Good job!", "Display comment success", "success");
+                    setTimeout(function(){
+                        location.reload();
+                    }, 1000);
+                }
+            });
+        });
+
+        $('.del_comment').click(function(){
+            var comment_id = $(this).attr('data-comment_id');
+            var _token = $('input[name="_token"]').val();
+            swal({
+			title: "Confirm Delte",
+			text: "Do you want to delete this comment?",
+			icon: "warning",
+			//2 buttons
+			buttons : {
+				cancel: {
+                    text: "No",
+                    value: null,
+                    visible: true,
+                    className: "",
+                    closeModal: true,
+		        },
+			    confirm: {
+					text: "Yes",
+					value: true,
+					visible: true,
+					className: "",
+					closeModal: true
+				}
+			}
+			}).then((value) => {
+				if (value) {
+                    $.ajax({
+                        url: '{{URL::to('/del-comment')}}',
+                        type: 'POST',
+                        data: {comment_id:comment_id, _token:_token},
+                        success: function(data){
+                            swal("Good job!", "Delete comment success", "success");
+                            setTimeout(function(){
+                                location.reload();
+                            }, 1000);
+                        }
+                    });
+			    }
+		    });    
+        });
     });
 </script>
 </body>

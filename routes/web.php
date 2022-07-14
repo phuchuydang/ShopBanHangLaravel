@@ -17,6 +17,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\ContactController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -110,7 +112,6 @@ Route::get('/product-detail/{product_id}', [ProductController::class, 'productDe
 
 Route::post('/add-cart', [CartController::class, 'addCart']);
 
-Route::get('/show-cart', [CartController::class, 'showCart']);
 
 Route::get('/show-carts', [CartController::class, 'showCarts']);
 
@@ -267,3 +268,34 @@ Route::get('/edit-video/{video_id}', [VideoController::class, 'editVideo']);
 Route::post('/update-video', [VideoController::class, 'updateVideo']);
 
 Route::get('/video-shop', [VideoController::class, 'videoShop']);
+
+//Tag
+Route::get('/tag/{product_tag}', [ProductController::class, 'getTag']);
+
+//Search
+Route::post('/search-autocomplete', [HomeController::class, 'searchAutocomplete']);
+
+//Quick view
+Route::post('/quick-view', [ProductController::class, 'quickView']);
+
+//Comment
+Route::post('/load-comment', [CommentController::class, 'loadComment']);
+
+Route::post('/send-comment', [CommentController::class, 'sendComment']);
+
+Route::get('/list-comment', [CommentController::class, 'listComment']);
+
+Route::post('/hide-comment' , [CommentController::class, 'hideComment']);
+
+Route::post('/display-comment' , [CommentController::class, 'displayComment']);
+
+Route::post('/del-comment' , [CommentController::class, 'deleteComment']);
+
+Route::post('/reply-comment' , [CommentController::class, 'replyComment']);
+
+//Contact
+Route::get('/contact', [ContactController::class, 'contact']);
+
+Route::get('/add-contact', [ContactController::class, 'addContact']);
+
+Route::post('/save-contact', [ContactController::class, 'saveContact']);
